@@ -1,0 +1,14 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/daniel/dev/este",
+			"file_exclude_patterns": [
+				"assets/js/app/*.js",
+				"assets/js/dev/*.js",
+				"assets/js/este/*.js",
+				"assets/js/deps.js"
+			]
+		}
+	]
+}

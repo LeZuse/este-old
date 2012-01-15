@@ -1,5 +1,5 @@
 ###
-	@fileoverview fok fok
+	@fileoverview
 ###
 
 goog.provide 'este.ui.ooplightbox.AnchorClickHandler'

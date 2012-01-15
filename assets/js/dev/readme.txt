@@ -1,5 +1,6 @@
 How to use it
 
+	ulimit -n 10000
 	node assets/js/dev/start
 		- will start server, watch coffee and stylus files, make deps
 

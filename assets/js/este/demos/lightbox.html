@@ -1,0 +1,134 @@
+<!doctype html>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<title>este.ui.Lightbox</title>
+	<script src='/assets/js/closure-library/closure/goog/base.js'></script>
+	<script src='/assets/js/deps.js'></script>
+	<script>
+		goog.require('este.ui.OOPLightbox');
+		goog.require('este.ui.NaiveLightbox');
+	</script>
+	<style>
+		#gallery a {
+			display: inline-block;
+			vertical-align: top;
+			width: 120px;
+			margin: 10px;
+			padding: 1px;
+			border: solid 1px #ddd;
+			font-size: 0px;
+		}
+
+		#gallery a img {
+			width: 100%;
+		}
+
+		.lightbox {
+			position: fixed;
+			left: 0; right: 0; top: 0; bottom: 0;
+			z-index: 1;
+		}
+
+		.lightbox .background {
+			position: absolute;
+			left: 0; right: 0; top: 0; bottom: 0;
+			z-index: -1;
+			background-color: #000;
+			opacity: .8;
+		}
+
+		.lightbox .image {
+			position: absolute;
+			left: 10px; right: 10px;
+			top: 10px; bottom: 50px;
+			text-align: center;
+		}
+
+		.lightbox .image img {
+			max-width: 100%;
+			max-height: 100%;
+		}
+
+		.lightbox .sidebar {
+			position: absolute;
+			left: 10px;	right: 10px;
+			bottom: 0;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+		}
+
+		.lightbox .sidebar > * {
+			display: inline-block;
+		}
+
+		.lightbox .sidebar .title {
+			position: absolute;
+			right: 10px;
+			top: 0;
+			color: #fff;
+			text-transform: uppercase;
+		}
+
+		.lightbox .sidebar .current {
+		}
+
+		.lightbox .sidebar .buttons {
+		}
+
+		.lightbox .sidebar .buttons > * {
+			display: inline-block;		
+		}
+
+
+	</style>
+</head>
+<body>
+	<h1>este.ui.LightBox</h1>
+	<div id="gallery">
+		<a 
+			title='Anca'
+			rel='lightbox[girls]' 
+			href='http://cache2.allpostersimages.com/p/LRG/22/2240/519ZD00Z/posters/two-girls.jpg'>
+			<img src='http://cache2.allpostersimages.com/p/LRG/22/2240/519ZD00Z/posters/two-girls.jpg'>
+		</a>
+		<a 
+			title='Janca' 
+			rel='lightbox[girls]' 
+			href='http://www.bennadel.com/resources/uploads/two_naughty_girls_touching.jpg'>
+			<img src='http://www.bennadel.com/resources/uploads/two_naughty_girls_touching.jpg'>
+		</a>
+		<a 
+			title='Hanca' 
+			rel='lightbox[girls]' 
+			href='http://www.belizehotspot.com/images/belize-girls.jpg'>
+			<img src='http://www.belizehotspot.com/images/belize-girls.jpg'>
+		</a>
+		<a
+			title='Fanca'
+			rel='lightbox[girls]' 
+			href='http://www.abclinuxu.cz/images/screenshots/9/9/121499-gnome-green-girl-45229.jpg'>
+			<img src='http://www.abclinuxu.cz/images/screenshots/9/9/121499-gnome-green-girl-45229.jpg'>
+		</a>
+		<a
+			title='Kanca' 
+			rel='lightbox[girls]' 
+			href='http://media1.break.com/dnet/media/2008/5/35may14-i-luv-girls-who-wanna-party.jpg'>
+			<img src='http://media1.break.com/dnet/media/2008/5/35may14-i-luv-girls-who-wanna-party.jpg'>
+		</a>
+	</div>		
+
+	<script>
+		
+		//var lightbox = este.ui.OOPLightbox.create();
+		//lightbox.decorate(document.body);
+
+		var lightbox = new este.ui.NaiveLightbox(document.body);
+		
+		setInterval(function() {
+			document.title = goog.events.getTotalListenerCount();
+		}, 100);
+
+	</script>	
+</body>

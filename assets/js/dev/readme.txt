@@ -1,6 +1,6 @@
 How to use it
 
-	ulimit -n 10000
+	ulimit -n 10000 (because watch can handle 256 files max on default)
 	node assets/js/dev/start
 		- will start server, watch coffee and stylus files, make deps
 

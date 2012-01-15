@@ -81,7 +81,7 @@ resolveDeps = (namespaces, deps) ->
 	files
 
 writeNodeGoogBase = ->
-	googBasePath = './assets/js/closure-library/closure/goog/base.js'
+	googBasePath = './assets/js/google-closure/closure/goog/base.js'
 	googNodeBasePath = './assets/js/dev/nodebase.js'
 	nodeBase = fs.readFileSync googBasePath, 'utf8'
 	nodeBase = nodeBase.replace 'var goog = goog || {};', 'global.goog = global.goog || {};'

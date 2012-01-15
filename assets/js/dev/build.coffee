@@ -10,8 +10,8 @@ build = (project, flags) ->
 		for flag in flags.split ' '
 			flagsText += "--compiler_flags=\"#{flag}\" "
 	command = "
-		assets/js/closure-library/closure/bin/build/closurebuilder.py
-			--root=assets/js/closure-library
+		assets/js/google-closure/closure/bin/build/closurebuilder.py
+			--root=assets/js/google-closure
 			--root=assets/js/este
 			--root=assets/js/app
 			--namespace=\"#{project}.start\"

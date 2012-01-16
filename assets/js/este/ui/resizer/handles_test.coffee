@@ -14,11 +14,12 @@ suite 'este.ui.resizer.Handles', ->
 		element.offsetWidth = 100
 		element.offsetHeight = 200
 		element.ownerDocument.defaultView =
-			getComputedStyle: ->
-				marginTop: 6
-				marginRight: 6
-				marginBottom: 6
-				marginLeft: 6
+			getComputedStyle: (el) ->
+				if el == element
+					marginTop: 6
+					marginRight: 6
+					marginBottom: 6
+					marginLeft: 6
 		offsetParent = document.createElement 'div'
 		element.offsetParent = offsetParent
 		handles.decorate element

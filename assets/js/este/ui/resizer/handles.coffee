@@ -52,10 +52,8 @@ goog.scope ->
 
 	_::update = ->
 		el = @getElement()
-		margins = style.getMarginBox el
-		left = el.offsetLeft - margins.left
-		top = el.offsetTop - margins.top
-
+		left = el.offsetLeft 
+		top = el.offsetTop 
 		style.setPosition @horizontal, left, top + el.offsetHeight
 		style.setWidth @horizontal, el.offsetWidth
 

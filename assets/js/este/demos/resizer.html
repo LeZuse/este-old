@@ -9,15 +9,15 @@
 		goog.require('este.ui.Resizer');
 	</script>
 	<style>
-		* {
-			margin: 0;
-			padding: 0;
-		}
-		div, img, iframe {
+		#div, img, iframe {
 			width: 300px;
 			display: block;
 			border: solid 10px #ddd;
 			margin: 6px;
+		}
+		#div {
+			border: 0;
+			background-color: #bbb;
 		}
 		div, iframe {
 			height: 100px;
@@ -38,16 +38,23 @@
 </head>
 <body>
 	<h1>este.ui.Resizer</h1>
-	<div></div>
+	<div id="div"></div>
 	<img src="http://www.bennadel.com/resources/uploads/two_naughty_girls_touching.jpg">
 	<iframe src="http://javascript-skoleni.cz"></iframe>
 	<script>
 		var resizer = este.ui.Resizer.create();
 		resizer.decorate(document.body);
 
+		// just for visual test
 		setTimeout(function() {
 			handles = new este.ui.resizer.Handles;
+			handles.decorate(document.querySelector('#div'));
+
+			handles = new este.ui.resizer.Handles;
 			handles.decorate(document.querySelector('img'));
+
+			handles = new este.ui.resizer.Handles;
+			handles.decorate(document.querySelector('iframe'));
 		}, 1000)
 		
 		setInterval(function() {

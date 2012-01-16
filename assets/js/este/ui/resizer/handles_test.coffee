@@ -13,20 +13,10 @@ suite 'este.ui.resizer.Handles', ->
 		element.offsetTop = 30
 		element.offsetWidth = 100
 		element.offsetHeight = 200
-		element.ownerDocument.defaultView =
-			getComputedStyle: (el) ->
-				if el == element
-					marginTop: 6
-					marginRight: 6
-					marginBottom: 6
-					marginLeft: 6
 		offsetParent = document.createElement 'div'
 		element.offsetParent = offsetParent
 		handles.decorate element
 
-	teardown ->
-		element.ownerDocument.defaultView = null
-		
 	suite 'Handles.create', ->
 		test 'should create instance', ->
 			handles = Handles.create()
@@ -44,11 +34,11 @@ suite 'este.ui.resizer.Handles', ->
 			assert.equal handles.horizontal.parentNode, element.offsetParent
 
 		test 'should set handles bounds', ->
-			assert.equal handles.horizontal.style.left, '14px'
-			assert.equal handles.horizontal.style.top, '224px'
+			assert.equal handles.horizontal.style.left, '20px'
+			assert.equal handles.horizontal.style.top, '230px'
 			assert.equal handles.horizontal.style.width, '100px'
-			assert.equal handles.vertical.style.left, '114px'
-			assert.equal handles.vertical.style.top, '24px'
+			assert.equal handles.vertical.style.left, '120px'
+			assert.equal handles.vertical.style.top, '30px'
 			assert.equal handles.vertical.style.height, '200px'
 
 		test 'should add classes to handles', ->
@@ -62,11 +52,11 @@ suite 'este.ui.resizer.Handles', ->
 			element.offsetWidth = 110
 			element.offsetHeight = 210
 			handles.update()
-			assert.equal handles.horizontal.style.left, '24px'
-			assert.equal handles.horizontal.style.top, '244px'
+			assert.equal handles.horizontal.style.left, '30px'
+			assert.equal handles.horizontal.style.top, '250px'
 			assert.equal handles.horizontal.style.width, '110px'
-			assert.equal handles.vertical.style.left, '134px'
-			assert.equal handles.vertical.style.top, '34px'
+			assert.equal handles.vertical.style.left, '140px'
+			assert.equal handles.vertical.style.top, '40px'
 			assert.equal handles.vertical.style.height, '210px'
 
 	suite '#dispose', ->

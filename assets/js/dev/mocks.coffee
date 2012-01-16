@@ -1,3 +1,5 @@
+global.assert = require('/usr/local/lib/node_modules/chai').assert
+
 global.document =
 	addEventListener: ->
 	createElement: (tag) ->

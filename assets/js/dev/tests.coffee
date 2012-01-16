@@ -55,6 +55,7 @@ getDirectoryFiles = (directory, callback) ->
 ###
 getNamespacesToTest = (files, deps) ->
 	namespaces = [
+		# we need that for DOM event simulation 
 		'goog.testing.events'
 	]
 	for file, testFile of files
@@ -117,7 +118,7 @@ run = (startWatch) ->
 	depsFiles = resolveDeps namespaces, deps
 	writeNodeGoogBase()
 	files = getAllFiles depsFiles, testFiles
-	command = 'mocha --colors --require should --timeout 10 --ui tdd --reporter spec ' + files.join ' '
+	command = 'mocha --colors --timeout 10 --ui tdd --reporter spec ' + files.join ' '
 	exec command, (err, stdout, stderr) ->
 		if err
 			console.log stderr

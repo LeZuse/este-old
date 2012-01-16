@@ -41,14 +41,14 @@ suite 'este.ui.OOPLightbox', ->
 		test 'should create lightbox instance with object graph', ->
 			lightbox = OOPLightbox.create()
 
-			lightbox.should.be.instanceof OOPLightbox
-			lightbox.anchorClickHandler.should.be.instanceof ooplightbox.AnchorClickHandler
-			lightbox.viewFactory.should.be.instanceof Function
+			assert.instanceOf lightbox, OOPLightbox
+			assert.instanceOf lightbox.anchorClickHandler, ooplightbox.AnchorClickHandler
+			assert.instanceOf lightbox.viewFactory, Function
 	
 	suite '#decorate()', ->
 		test 'should decorate handler with its element', (done) ->
-			handler.decorate = (element) ->
-				element.should.equal element
+			handler.decorate = (el) ->
+				assert.equal el, element
 				done()
 			lightbox.decorate element
 		
@@ -57,8 +57,8 @@ suite 'este.ui.OOPLightbox', ->
 			currentAnchor = {}
 			anchors = []
 			viewFactory = (p_currentAnchor, p_anchors) ->
-				p_currentAnchor.should.equal currentAnchor	
-				p_anchors.should.equal anchors
+				assert.equal p_currentAnchor, currentAnchor
+				assert.equal p_anchors, anchors
 				done()
 				view
 			lightbox = new OOPLightbox handler, viewFactory
@@ -70,7 +70,7 @@ suite 'este.ui.OOPLightbox', ->
 		test 'should add view as child', ->
 			lightbox.decorate element
 			fireHandlerClickEvent()
-			lightbox.getChildAt(0).should.equal view
+			assert.equal lightbox.getChildAt(0), view
 
 		test 'should render view', (done) ->
 			view.render_ = -> done()
@@ -83,7 +83,7 @@ suite 'este.ui.OOPLightbox', ->
 			# show view
 			fireHandlerClickEvent()
 			lightbox.close()
-			(lightbox.getChildAt(0) == null).should.be.true
+			assert.isNull lightbox.getChildAt 0
 
 	suite 'view close event', ->
 		test 'should remove shown view', ->
@@ -91,4 +91,4 @@ suite 'este.ui.OOPLightbox', ->
 			# show view
 			fireHandlerClickEvent()
 			fireViewCloseEvent()
-			(lightbox.getChildAt(0) == null).should.be.true
+			assert.isNull lightbox.getChildAt 0

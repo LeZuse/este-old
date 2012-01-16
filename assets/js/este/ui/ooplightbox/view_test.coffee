@@ -36,16 +36,16 @@ suite 'este.ui.ooplightbox.View', ->
 	suite 'factory method View.create()', ->
 		test 'should return instance of View with assigned properties', ->
 			view = View.create firstAnchor, anchors
-			view.should.be.instanceof View
-			view.currentAnchor.should.equal firstAnchor
-			view.anchors.should.equal anchors
+			assert.instanceOf view, View
+			assert.equal view.currentAnchor, firstAnchor
+			assert.equal view.anchors, anchors
 
 	suite '#render()', ->
 		test 'should create element with class lightbox', ->
-			view.getElement().className.should.equal 'lightbox'
+			assert.equal view.getElement().className, 'lightbox'
 		
 		test 'should create element with defined innerHTML', ->
-			view.getElement().innerHTML.normalizeHTML().should.equal "
+			assert.equal view.getElement().innerHTML.normalizeHTML(), "
 				<div class='background'></div>
 				<div class='image'>
 					<img src='0'>
@@ -63,11 +63,11 @@ suite 'este.ui.ooplightbox.View', ->
 	suite 'click on button with class .next', ->
 		test 'should set currentAnchor to secondAnchor', ->
 			fireViewElementClickEvent 'next'
-			view.currentAnchor.should.equal secondAnchor
+			assert.equal view.currentAnchor, secondAnchor
 
 		test 'should update innerHTML', ->
 			fireViewElementClickEvent 'next'
-			view.getElement().innerHTML.normalizeHTML().should.equal "
+			assert.equal view.getElement().innerHTML.normalizeHTML(), "
 				<div class='background'></div>
 				<div class='image'>
 					<img src='1'>
@@ -85,12 +85,12 @@ suite 'este.ui.ooplightbox.View', ->
 		test 'two times, should set currentAnchor to secondAnchor', ->
 			fireViewElementClickEvent 'next'
 			fireViewElementClickEvent 'next'
-			view.currentAnchor.should.equal secondAnchor
+			assert.equal view.currentAnchor, secondAnchor
 
 	suite 'click on button with class .previous', ->
 		test 'should should set currentAnchor to firstAnchor', ->
 			fireViewElementClickEvent 'previous'
-			view.currentAnchor.should.equal firstAnchor
+			assert.equal view.currentAnchor, firstAnchor
 
 	suite 'click on button with class .close', ->
 		test 'should dispatch close event', (done) ->
@@ -101,16 +101,3 @@ suite 'este.ui.ooplightbox.View', ->
 		test 'should dispatch close event', (done) ->
 			goog.events.listen view, 'close', -> done()
 			fireDocumentKeydownEvent()
-			
-
-
-
-
-
-
-
-
-
-
-
-

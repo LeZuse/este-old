@@ -22,14 +22,12 @@ suite 'este.ui.ooplightbox.AnchorClickHandler', ->
 
 	suite '#decorate', ->
 		test 'should register click event', ->
-			elementListeners.should.have.property 'onclick'
-			elementListeners.onclick.should.be.instanceof Function
+			assert.typeOf elementListeners.onclick, 'function'
 
 		test 'should register click event via enterDocument', ->
 			handler.exitDocument()
 			handler.enterDocument()
-			elementListeners.should.have.property 'onclick'
-			elementListeners.onclick.should.be.instanceof Function
+			assert.typeOf elementListeners.onclick, 'function'
 
 	suite 'click should prevent default action', ->
 		test 'on anchor with lightbox rel attribute', (done) ->
@@ -53,7 +51,7 @@ suite 'este.ui.ooplightbox.AnchorClickHandler', ->
 			elementListeners.onclick
 				target: {}
 				preventDefault: -> called = true
-			called.should.be.false
+			assert.isFalse called
 		
 		test 'on element inside of not anchor element without lightbox rel attribute', ->
 			called = false
@@ -61,12 +59,12 @@ suite 'este.ui.ooplightbox.AnchorClickHandler', ->
 				target:
 					parentNode: {}
 				preventDefault: -> called = true
-			called.should.be.false
+			assert.isFalse called
 
 	suite 'click on anchor', ->
 		test 'should call element.querySelectorAll', (done) ->
 			element.querySelectorAll = (query) ->
-				query.should.equal "a[rel='lightbox[Page1]']"
+				assert.equal query, "a[rel='lightbox[Page1]']"
 				done()
 			elementListeners.onclick
 				target:
@@ -81,20 +79,8 @@ suite 'este.ui.ooplightbox.AnchorClickHandler', ->
 			element.querySelectorAll = (query) ->
 				anchors
 			goog.events.listenOnce handler, 'click', (e) ->
-				e.anchors.should.equal anchors
-				e.currentAnchor.should.equal currentAnchor
+				assert.equal e.anchors, anchors
+				assert.equal e.currentAnchor, currentAnchor
 				done()
 			elementListeners.onclick
 				target: currentAnchor
-
-
-
-
-
-
-
-
-
-
-
-				

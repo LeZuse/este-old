@@ -44,18 +44,49 @@ goog.scope ->
 		@inheritDoc
 	###
 	_::createHandles = ->
-		@vertical = @dom_.createDom 'div'
-		@horizontal = @dom_.createDom 'div'
+		@vertical = @dom_.createDom 'div', 'este-resizer-handle-vertical'
+		@horizontal = @dom_.createDom 'div', 'este-resizer-handle-horizontal'
 		parent = @getElement().offsetParent
 		parent.appendChild @vertical
 		parent.appendChild @horizontal
 
 	_::update = ->
 		el = @getElement()
-		style.setPosition @horizontal, el.offsetLeft, el.offsetTop + el.offsetHeight
+		margins = style.getMarginBox el
+		left = el.offsetLeft - margins.left
+		top = el.offsetTop - margins.top
+
+		style.setPosition @horizontal, left, top + el.offsetHeight
 		style.setWidth @horizontal, el.offsetWidth
 
-		style.setPosition @vertical, el.offsetLeft + el.offsetWidth, el.offsetTop
+		style.setPosition @vertical, left + el.offsetWidth, top
 		style.setHeight @vertical, el.offsetHeight
 
+	_::disposeInternal = ->
+		@dom_.removeNode @horizontal
+		@dom_.removeNode @vertical
+		goog.base @, 'disposeInternal'
+		return
+
 	return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

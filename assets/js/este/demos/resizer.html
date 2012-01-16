@@ -9,14 +9,30 @@
 		goog.require('este.ui.Resizer');
 	</script>
 	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
 		div, img, iframe {
 			width: 300px;
 			display: block;
-			border: solid 1px #ccc;
+			border: solid 10px #ddd;
 			margin: 6px;
 		}
 		div, iframe {
 			height: 100px;
+		}
+		.este-resizer-handle-horizontal,
+		.este-resizer-handle-vertical {
+			position: absolute;
+			background-color: red;
+			border: 0;
+		}
+		.este-resizer-handle-horizontal {
+			height: 1px;
+		}
+		.este-resizer-handle-vertical {
+			width: 1px;
 		}
 	</style>
 </head>
@@ -29,6 +45,11 @@
 		var resizer = este.ui.Resizer.create();
 		resizer.decorate(document.body);
 
+		setTimeout(function() {
+			handles = new este.ui.resizer.Handles;
+			handles.decorate(document.querySelector('img'));
+		}, 1000)
+		
 		setInterval(function() {
 			document.title = goog.events.getTotalListenerCount();
 		}, 100);

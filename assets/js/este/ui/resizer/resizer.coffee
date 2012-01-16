@@ -5,6 +5,8 @@ goog.provide 'este.ui.Resizer'
 
 goog.require 'goog.ui.Component'
 
+goog.require 'este.ui.resizer.Handles'
+
 ###*
 	@constructor
 	@extends {goog.ui.Component}

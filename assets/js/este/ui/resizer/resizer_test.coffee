@@ -7,8 +7,9 @@ suite 'este.ui.Resizer', ->
 	suite 'Resizer.create', ->
 		test 'should create instance', ->
 			resizer = Resizer.create()
-			# resizer.should.be.instanceof Resizer
-			#assert.typeOf resizer, Resizer
+			assert.instanceOf resizer, Resizer
+
+		
 
 
 

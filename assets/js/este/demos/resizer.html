@@ -3,38 +3,12 @@
 	<meta charset='utf-8'>
 	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 	<title>este.ui.Resizer</title>
+	<link rel="stylesheet" type="text/css" href="css/resizer.css">
 	<script src='/assets/js/google-closure/closure/goog/base.js'></script>
 	<script src='/assets/js/deps.js'></script>
 	<script>
 		goog.require('este.ui.Resizer');
 	</script>
-	<style>
-		#div, img, iframe {
-			width: 300px;
-			display: block;
-			border: solid 10px #ddd;
-			margin: 6px;
-		}
-		#div {
-			border: 0;
-			background-color: #bbb;
-		}
-		div, iframe {
-			height: 100px;
-		}
-		.este-resizer-handle-horizontal,
-		.este-resizer-handle-vertical {
-			position: absolute;
-			background-color: red;
-			border: 0;
-		}
-		.este-resizer-handle-horizontal {
-			height: 1px;
-		}
-		.este-resizer-handle-vertical {
-			width: 1px;
-		}
-	</style>
 </head>
 <body>
 	<h1>este.ui.Resizer</h1>
@@ -42,21 +16,21 @@
 	<img src="http://www.bennadel.com/resources/uploads/two_naughty_girls_touching.jpg">
 	<iframe src="http://javascript-skoleni.cz"></iframe>
 	<script>
-		var resizer = este.ui.Resizer.create();
-		resizer.decorate(document.body);
-
-		// just for visual test
-		setTimeout(function() {
-			handles = new este.ui.resizer.Handles;
-			handles.decorate(document.querySelector('#div'));
-
-			handles = new este.ui.resizer.Handles;
-			handles.decorate(document.querySelector('img'));
-
-			handles = new este.ui.resizer.Handles;
-			handles.decorate(document.querySelector('iframe'));
-		}, 1000)
 		
+		document.querySelector('img').onload = function() {
+			var resizer = este.ui.Resizer.create();
+			resizer.decorate(document.body);	
+
+			// handles = new este.ui.resizer.Handles;
+			// handles.decorate(document.querySelector('#div'));
+
+			// handles = new este.ui.resizer.Handles;
+			// handles.decorate(document.querySelector('img'));
+
+			// handles = new este.ui.resizer.Handles;
+			// handles.decorate(document.querySelector('iframe'));
+		};
+
 		setInterval(function() {
 			document.title = goog.events.getTotalListenerCount();
 		}, 100);

@@ -1,0 +1,41 @@
+<!doctype html>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<title>este.events.Delegation</title>
+	<style>
+		div {
+			border: solid 1px red;
+			padding: 1em;
+		}
+		em {
+			border: solid 1px blue;
+		}
+	</style>
+	<script src='/assets/js/google-closure/closure/goog/base.js'></script>
+	<script src='/assets/js/deps.js'></script>
+	<script>
+		goog.require('este.events.Delegation');
+	</script>
+</head>
+<body>
+	<h1>este.events.Delegation</h1>
+	<div id="div">
+		<em>Inner mousehover events are ignored.</em>
+	</div>
+	<script>
+		
+		delegation = new este.events.Delegation(document.body, ['mouseover', 'mouseout']);
+		delegation.targetFilter = function(el) {
+			return el.tagName == 'DIV'
+		};
+		goog.events.listen(delegation, ['mouseover', 'mouseout'], function(e) {
+			console.log(e.type);
+		});
+	
+		setInterval(function() {
+			document.title = goog.events.getTotalListenerCount();
+		}, 100);
+
+	</script>	
+</body>

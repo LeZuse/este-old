@@ -22,5 +22,9 @@ global.document =
 			node.parentNode = null if node.parentNode == @
 			node
 		addEventListener: ->
+	defaultView:
+		getComputedStyle: (element) ->
+			# this is how we can foist computed styles for every element
+			element.__currentStyle || {}
 
 global.document.body = global.document.createElement 'body'

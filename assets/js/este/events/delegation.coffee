@@ -89,7 +89,7 @@ goog.scope ->
 	_::disposeInternal = ->
 		goog.base @, 'disposeInternal'
 		goog.events.unlistenByKey @listenKey_
-		delete this.listenKey_
+		delete @listenKey_
 		return
 
 	return

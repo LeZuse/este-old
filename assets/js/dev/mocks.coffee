@@ -11,7 +11,7 @@ global.document =
 	addEventListener: ->
 	createElement: (tag) ->
 		tagName: tag.toUpperCase()
-		nodeType: 3
+		nodeType: 1
 		className: ''
 		ownerDocument: global.document
 		style: {}

@@ -1,5 +1,6 @@
 #div,img,iframe{width:300px;display:block;border:solid 10px #ddd;margin:6px}
-#div{border:0;background-color:#bbb}
+#div{border:0;background-color:#bbb;}
+#div em{border:solid 1px #f00}
 div,iframe{height:100px}
 .este-resizer-handle-horizontal,.este-resizer-handle-vertical{position:absolute;background-color:#f00;border:0;opacity:.5}
 .este-resizer-handle-horizontal{height:5px;margin-top:-5px}

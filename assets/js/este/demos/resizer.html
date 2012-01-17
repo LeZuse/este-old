@@ -8,11 +8,14 @@
 	<script src='/assets/js/deps.js'></script>
 	<script>
 		goog.require('este.ui.Resizer');
+		goog.require('este.events.Delegation');
 	</script>
 </head>
 <body>
 	<h1>este.ui.Resizer</h1>
-	<div id="div"></div>
+	<div id="div">
+		<em>Inner mousehover events are ignored.</em>
+	</div>
 	<img src="http://www.bennadel.com/resources/uploads/two_naughty_girls_touching.jpg">
 	<iframe src="http://javascript-skoleni.cz"></iframe>
 	<script>
@@ -20,7 +23,14 @@
 		document.querySelector('img').onload = function() {
 			var resizer = este.ui.Resizer.create();
 			resizer.decorate(document.body);	
-
+		
+			delegation = new este.events.Delegation(document.body, ['mouseover', 'mouseout']);
+			delegation.targetFilter = function(el) {
+				return el.tagName == 'DIV'
+			};
+			goog.events.listen(delegation, ['mouseover', 'mouseout'], function(e) {
+				console.log(e.type);
+			});
 			// handles = new este.ui.resizer.Handles;
 			// handles.decorate(document.querySelector('#div'));
 

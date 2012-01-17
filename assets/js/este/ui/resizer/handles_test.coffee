@@ -24,8 +24,8 @@ suite 'este.ui.resizer.Handles', ->
 	
 	suite '#decorate', ->
 		test 'should render vertical and horizontal handles', ->
-			assert.equal handles.vertical.nodeType, 3
-			assert.equal handles.horizontal.nodeType, 3
+			assert.equal handles.vertical.nodeType, 1
+			assert.equal handles.horizontal.nodeType, 1
 
 		test 'should render handles into offsetParent', ->
 			assert.isNotNull handles.vertical.parentNode

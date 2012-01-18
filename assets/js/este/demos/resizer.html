@@ -21,6 +21,9 @@
 	<script>
 		
 		var resizer = este.ui.Resizer.create();
+		resizer.targetFilter = function(el) {
+			return el.id == 'div' || {IMG: 1, IFRAME: 1}[el.tagName];
+		};
 		resizer.decorate(document.body);	
 		
 		setInterval(function() {

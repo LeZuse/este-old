@@ -2,12 +2,11 @@ suite 'este.ui.resizer.Handles', ->
 
 	Handles = este.ui.resizer.Handles
 
-	handles = null
 	element = null
+	handles = null
 	offsetParent = null
 
 	setup ->
-		handles = new Handles
 		element = document.createElement 'div'
 		element.offsetLeft = 20
 		element.offsetTop = 30
@@ -15,6 +14,7 @@ suite 'este.ui.resizer.Handles', ->
 		element.offsetHeight = 200
 		offsetParent = document.createElement 'div'
 		element.offsetParent = offsetParent
+		handles = new Handles
 		handles.decorate element
 
 	suite 'Handles.create', ->
@@ -44,6 +44,13 @@ suite 'este.ui.resizer.Handles', ->
 		test 'should add classes to handles', ->
 			assert.ok goog.dom.classes.has handles.horizontal, 'este-resizer-handle-horizontal'
 			assert.ok goog.dom.classes.has handles.vertical, 'este-resizer-handle-vertical'
+
+		test 'should render handles into element itself if offsetParent is null', ->
+			element.offsetParent = null
+			handles = new Handles
+			handles.decorate element
+			assert.equal handles.vertical.parentNode, element
+			assert.equal handles.horizontal.parentNode, element
 
 	suite '#update', ->
 		test 'should update handles bounds', ->

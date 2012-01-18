@@ -2,6 +2,7 @@
 	@fileoverview
 ###
 goog.provide 'este.ui.resizer.Handles'
+goog.provide 'este.ui.resizer.Handles.create'
 
 goog.require 'goog.ui.Component'
 
@@ -46,7 +47,7 @@ goog.scope ->
 	_::createHandles = ->
 		@vertical = @dom_.createDom 'div', 'este-resizer-handle-vertical'
 		@horizontal = @dom_.createDom 'div', 'este-resizer-handle-horizontal'
-		parent = @getElement().offsetParent
+		parent = @getElement().offsetParent || @getElement()
 		parent.appendChild @vertical
 		parent.appendChild @horizontal
 

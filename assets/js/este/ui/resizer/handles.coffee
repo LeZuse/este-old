@@ -36,6 +36,11 @@ goog.scope ->
 	_::horizontal
 
 	###*
+		@type {Element}
+	###
+	_::activeHandle
+
+	###*
 		@inheritDoc
 	###
 	_::decorateInternal = (element) ->
@@ -43,6 +48,28 @@ goog.scope ->
 		@createHandles()
 		@update()
 		return
+
+	###*
+		@inheritDoc
+	###
+	_::enterDocument = ->
+		goog.base @, 'enterDocument'
+		@getHandler().
+			listen(@horizontal, 'mousedown', @onHorizontalMouseDown).
+			listen(@vertical, 'mousedown', @onVerticalMouseDown)
+		return
+
+	###*
+		@param {goog.events.BrowserEvent}
+	###
+	_::onHorizontalMouseDown = (e) ->
+		@activeHandle = @horizontal
+
+	###*
+		@param {goog.events.BrowserEvent}
+	###
+	_::onVerticalMouseDown = (e) ->
+		@activeHandle = @vertical
 
 	###*
 		@inheritDoc

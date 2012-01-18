@@ -16,7 +16,10 @@ suite 'este.ui.Resizer', ->
 			dispose: ->
 		delegationFactory = -> delegation
 		handles =
+			vertical: document.createElement 'div'
+			horizontal: document.createElement 'div'
 			decorate: ->
+			isHandle: ->
 			dispose: ->
 		handlesFactory = -> handles
 		resizer = new Resizer delegationFactory, handlesFactory
@@ -103,6 +106,22 @@ suite 'este.ui.Resizer', ->
 				type: 'mouseout'
 				target: target
 
+		test 'should not dispose handles if relatedTarget is handle', ->
+			relatedTarget = {}
+			called = false
+			handles.dispose = -> called = true
+			handles.isHandle = (el) -> el == relatedTarget
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			goog.events.fireListeners delegation, 'mouseover', false,
+				type: 'mouseover'
+				target: {}
+			goog.events.fireListeners delegation, 'mouseout', false,
+				type: 'mouseout'
+				target: {}
+				relatedTarget: relatedTarget
+			assert.isFalse called
+
 	suite '#dispose', ->
 		test 'should dispose handles on decorated resizer', (done) ->
 			target = {}
@@ -114,7 +133,45 @@ suite 'este.ui.Resizer', ->
 				target: target
 			resizer.dispose()
 
+	suite 'mouseout on shown handles', ->
+		test 'should dispose handles for vertical handle', (done) ->
+			target = {}
+			handles.dispose = ->
+				assert.equal goog.events.getTotalListenerCount(), listenersCount
+				done()
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			listenersCount = goog.events.getTotalListenerCount()
+			goog.events.fireListeners delegation, 'mouseover', false,
+				type: 'mouseover'
+				target: target
+			goog.events.fireListeners handles.vertical, 'mouseout', false,
+				type: 'mouseout'
+				target: target
+
+		test 'should dispose handles for horizontal handle', (done) ->
+			target = {}
+			handles.dispose = ->
+				assert.equal goog.events.getTotalListenerCount(), listenersCount
+				done()
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			listenersCount = goog.events.getTotalListenerCount()
+			goog.events.fireListeners delegation, 'mouseover', false,
+				type: 'mouseover'
+				target: target
+			goog.events.fireListeners handles.horizontal, 'mouseout', false,
+				type: 'mouseout'
+				target: target		
 
 
 
 
+
+
+
+
+
+
+
+	

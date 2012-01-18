@@ -94,11 +94,16 @@ goog.scope ->
 		@handles.dispose() if @handles
 		@handles = @handlesFactory()
 		@handles.decorate e.target
+		@getHandler().listen @handles.vertical, 'mouseout', @onMouseOut
+		@getHandler().listen @handles.horizontal, 'mouseout', @onMouseOut
 
 	###*
 		@param {goog.events.BrowserEvent}
 	###
 	_::onMouseOut = (e) ->
+		return if @handles.isHandle e.relatedTarget
+		@getHandler().unlisten @handles.vertical, 'mouseout', @onMouseOut
+		@getHandler().unlisten @handles.horizontal, 'mouseout', @onMouseOut
 		@handles.dispose()
 
 	return

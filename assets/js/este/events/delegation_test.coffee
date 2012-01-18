@@ -12,9 +12,11 @@ suite 'este.events.Delegation', ->
 		delegation.targetParentFilter = (el) ->
 			el.className == 'parent'
 	
-	teardown ->
-		goog.events.removeAll document
-	
+	suite 'Delegation.create', ->
+		test 'should return delegation', ->
+			delegation = new Delegation element, ['click', 'mouseover', 'mouseout']
+			assert.instanceOf delegation, Delegation
+
 	suite 'should dispatch click', ->
 		test 'on element with className .target and with parent className .parent', (done) ->
 			goog.events.listenOnce delegation, 'click', -> done()
@@ -25,15 +27,18 @@ suite 'este.events.Delegation', ->
 					parentNode:
 						className: 'parent'
 
-		test 'on element inside element with className .target and with parent className .parent', (done) ->
-			goog.events.listenOnce delegation, 'click', -> done()
+		test 'on element inside el with className .target and with parent className .parent', (done) ->
+			target =
+				className: 'target'
+				parentNode:
+					className: 'parent'
+			goog.events.listenOnce delegation, 'click', (e) ->
+				assert.equal e.target, target, 'target should be updated'
+				done()
 			goog.events.fireListeners element, 'click', false,
 				type: 'click'
 				target:
-					parentNode:
-						className: 'target'
-						parentNode:
-							className: 'parent'
+					parentNode: target
 
 	suite 'should not dispatch click', ->
 		test 'on element without className .target', ->

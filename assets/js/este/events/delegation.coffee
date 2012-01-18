@@ -1,10 +1,11 @@
 ###*
 	@fileoverview Simple and very useful event delegation.
-		You can listen what you want on document body with custom filters.
-		Much better solution than querySelectorAll based solutions. Similar to
-		Diego Perini bottom-up approach.
+		You can listen what you want with custom filters.
+		Much better solution than querySelectorAll based. Similar to Diego Perini
+		bottom-up approach.
 ###
 goog.provide 'este.events.Delegation'
+goog.provide 'este.events.Delegation.create'
 
 goog.require 'goog.events.EventTarget'
 goog.require 'goog.events'
@@ -24,6 +25,17 @@ goog.inherits este.events.Delegation, goog.events.EventTarget
 	
 goog.scope ->
 	`var _ = este.events.Delegation`
+
+	###*
+		@param {Element} element
+		@param {Array.<string>} eventTypes
+		@return {este.events.Delegation}
+	###
+	_.create = (element, eventTypes, targetFilter, targetParentFilter) ->
+		delegation = new este.events.Delegation element, eventTypes
+		delegation.targetFilter = targetFilter
+		delegation.targetParentFilter = targetParentFilter
+		delegation
 
 	###*
 		@type {Element}
@@ -78,10 +90,12 @@ goog.scope ->
 			else
 				break
 			element = element.parentNode
-		if targetMatched && targetParentMatched && e.type in ['mouseover', 'mouseout']
-			!e.relatedTarget || !goog.dom.contains target, e.relatedTarget
-		else
-			targetMatched && targetParentMatched
+		if !targetMatched || !targetParentMatched
+			return false
+		e.target = target
+		if e.type in ['mouseover', 'mouseout']
+			return !e.relatedTarget || !goog.dom.contains target, e.relatedTarget
+		true
 
 	###*
 		@inheritDoc

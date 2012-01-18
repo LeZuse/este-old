@@ -120,11 +120,14 @@ run = (startWatch) ->
 	files = getAllFiles depsFiles, testFiles
 	command = 'mocha --colors --timeout 10 --ui tdd --reporter spec ' + files.join ' '
 	exec command, (err, stdout, stderr) ->
-		if err
-			console.log stderr
-		else
-			exec 'clear', (err, stdout, stderr) ->
-				console.log stdout
+		# if err
+		# 	console.log stderr
+		# else
+		# 	exec 'clear', (err, stdout, stderr) ->
+		# 		console.log stdout
+		exec 'clear', (err2, stdout2, stderr2) ->
+			console.log stdout2
+			console.log stderr if err
 	watchFiles files, run if startWatch
 	
 run true

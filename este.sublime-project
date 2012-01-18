@@ -7,7 +7,9 @@
 				"assets/js/app/*.js",
 				"assets/js/dev/*.js",
 				"assets/js/este/*.js",
-				"assets/js/deps.js"
+				"assets/js/deps.js",
+				"assets/css/*.css",
+				"assets/js/este/demos/css/*.css"
 			]
 		}
 	]

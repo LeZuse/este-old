@@ -71,6 +71,33 @@ suite 'este.ui.resizer.Handles', ->
 			handles.dispose()
 			assert.isNull handles.vertical.parentNode
 			assert.isNull handles.horizontal.parentNode
+
+	suite '#isHandle', ->
+		test 'should return true for handle element', ->
+			assert.isTrue handles.isHandle handles.vertical
+			assert.isTrue handles.isHandle handles.horizontal
+
+		test 'should return false for anything else', ->
+			assert.isFalse handles.isHandle {}
+			assert.isFalse handles.isHandle null'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 
 

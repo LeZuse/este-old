@@ -19,6 +19,9 @@ goog.scope ->
 	`var _ = este.ui.resizer.Handles`
 	`var style = goog.style`
 
+	###*
+		@return {este.ui.resizer.Handles}
+	###
 	_.create = ->
 		new _
 
@@ -61,11 +64,20 @@ goog.scope ->
 		style.setPosition @vertical, left + el.offsetWidth, top
 		style.setHeight @vertical, el.offsetHeight
 
+	###*
+		@inheritDoc
+	###
 	_::disposeInternal = ->
 		@dom_.removeNode @horizontal
 		@dom_.removeNode @vertical
 		goog.base @, 'disposeInternal'
 		return
+
+	###*
+		@param {Element} element
+	###
+	_::isHandle = (element) ->
+		element in [@vertical, @horizontal]
 
 	return
 

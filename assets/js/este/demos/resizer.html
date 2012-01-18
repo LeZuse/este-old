@@ -20,27 +20,9 @@
 	<iframe src="http://javascript-skoleni.cz"></iframe>
 	<script>
 		
-		document.querySelector('img').onload = function() {
-			var resizer = este.ui.Resizer.create();
-			resizer.decorate(document.body);	
+		var resizer = este.ui.Resizer.create();
+		resizer.decorate(document.body);	
 		
-			delegation = new este.events.Delegation(document.body, ['mouseover', 'mouseout']);
-			delegation.targetFilter = function(el) {
-				return el.tagName == 'DIV'
-			};
-			goog.events.listen(delegation, ['mouseover', 'mouseout'], function(e) {
-				console.log(e.type);
-			});
-			// handles = new este.ui.resizer.Handles;
-			// handles.decorate(document.querySelector('#div'));
-
-			// handles = new este.ui.resizer.Handles;
-			// handles.decorate(document.querySelector('img'));
-
-			// handles = new este.ui.resizer.Handles;
-			// handles.decorate(document.querySelector('iframe'));
-		};
-
 		setInterval(function() {
 			document.title = goog.events.getTotalListenerCount();
 		}, 100);

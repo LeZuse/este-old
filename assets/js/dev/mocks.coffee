@@ -10,6 +10,8 @@ global.assert = require('/usr/local/lib/node_modules/chai').assert
 global.document =
 	addEventListener: ->
 	createElement: (tag) ->
+		offsetWidth: 0
+		offsetHeight: 0
 		tagName: tag.toUpperCase()
 		nodeType: 1
 		className: ''

@@ -79,7 +79,22 @@ suite 'este.ui.resizer.Handles', ->
 
 		test 'should return false for anything else', ->
 			assert.isFalse handles.isHandle {}
-			assert.isFalse handles.isHandle null'
+			assert.isFalse handles.isHandle null
+
+	suite 'mousedown on horizontal handle', ->
+		test 'should set horizontal handle as active', ->
+			goog.events.fireListeners handles.horizontal, 'mousedown', false,
+				target: handles.horizontal
+			assert.equal handles.activeHandle, handles.horizontal
+
+		test 'should call dragger factory', ->
+			
+
+	suite 'mousedown on vertical handle', ->
+		test 'should set vertical handle as active', ->
+			goog.events.fireListeners handles.vertical, 'mousedown', false,
+				target: handles.vertical
+			assert.equal handles.activeHandle, handles.vertical
 
 
 
@@ -87,17 +102,5 @@ suite 'este.ui.resizer.Handles', ->
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-	
 
 

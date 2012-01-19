@@ -44,6 +44,16 @@ goog.scope ->
 	_::handlesFactory
 
 	###*
+		@type {Element}
+	###
+	_::activeElement
+
+	###*
+		@type {goog.math.Size}
+	###
+	_::activeElementSize
+
+	###*
 		@param {Element} element
 		@return {boolean}
 	###
@@ -70,19 +80,25 @@ goog.scope ->
 	_::handles
 
 	###*
-		@inheritDoc
+		@type {boolean}
+		@protected
+	###
+	_::dragging = false
+
+	###*
+		@override
 	###
 	_::enterDocument = ->
 		goog.base @, 'enterDocument'
 		events = ['mouseover', 'mouseout']
 		@delegation = @delegationFactory @getElement(), events, @targetFilter, @targetParentFilter
 		@getHandler().
-			listen(@delegation, 'mouseover', @onMouseOver).
-			listen(@delegation, 'mouseout', @onMouseOut)
+			listen(@delegation, 'mouseover', @onDelegationMouseOver).
+			listen(@delegation, 'mouseout', @onDelegationMouseOut)
 		return
 
 	###*
-		@inheritDoc
+		@override
 	###
 	_::exitDocument = ->
 		goog.base @, 'exitDocument'
@@ -92,22 +108,57 @@ goog.scope ->
 
 	###*
 		@param {goog.events.BrowserEvent} e
+		@protected
 	###
-	_::onMouseOver = (e) ->
+	_::onDelegationMouseOver = (e) ->
+		return if @dragging
 		@handles.dispose() if @handles
 		@handles = @handlesFactory()
 		@handles.decorate e.target
-		@getHandler().listen @handles.vertical, 'mouseout', @onMouseOut
-		@getHandler().listen @handles.horizontal, 'mouseout', @onMouseOut
+		@getHandler().
+			listen(@handles.vertical, 'mouseout', @onDelegationMouseOut).
+			listen(@handles.horizontal, 'mouseout', @onDelegationMouseOut).
+			listen(@handles, 'start', @onDragStart).
+			listen(@handles, 'drag', @onDrag).
+			listen(@handles, 'end', @onDragEnd)
+
+	###*
+		@param {goog.events.BrowserEvent} e
+		@protected
+	###
+	_::onDelegationMouseOut = (e) ->
+		return if @dragging || @handles.isHandle e.relatedTarget
+		@getHandler().
+			unlisten(@handles.vertical, 'mouseout', @onDelegationMouseOut).
+			unlisten(@handles.horizontal, 'mouseout', @onDelegationMouseOut).
+			unlisten(@handles, 'start', @onDragStart).
+			unlisten(@handles, 'drag', @onDrag).
+			unlisten(@handles, 'end', @onDragEnd)
+
+		@handles.dispose()
 
 	###*
 		@param {goog.events.BrowserEvent} e
 	###
-	_::onMouseOut = (e) ->
-		return if @handles.isHandle e.relatedTarget
-		@getHandler().unlisten @handles.vertical, 'mouseout', @onMouseOut
-		@getHandler().unlisten @handles.horizontal, 'mouseout', @onMouseOut
-		@handles.dispose()
+	_::onDragStart = (e) ->
+		`var el = /** @type {Element} */ (e.element)`
+		@activeElementSize = goog.style.getBorderBoxSize el
+		@dragging = true
+		
+	###*
+		@param {Object} e
+	###
+	_::onDrag = (e) ->
+		width = @activeElementSize.width + e.width
+		height = @activeElementSize.height + e.height
+		e.element.style.width = width + 'px'
+		e.element.style.height = height + 'px'
+
+	###*
+		@param {Object} e
+	###
+	_::onDragEnd = (e) ->
+		@dragging = false
 
 	return
 

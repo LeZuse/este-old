@@ -7,8 +7,16 @@ suite 'este.ui.resizer.Handles', ->
 	element = null
 	handles = null
 	offsetParent = null
-	dragger = {}
+	dragger = null
 	draggerFactory = null
+
+	fireMouseDownOnVerticalHandle = ->
+		goog.events.fireListeners handles.vertical, 'mousedown', false,
+				target: handles.vertical
+
+	fireMouseDownOnHorizontalHandle = ->
+		goog.events.fireListeners handles.horizontal, 'mousedown', false,
+				target: handles.horizontal
 
 	setup ->
 		element = document.createElement 'div'
@@ -21,6 +29,7 @@ suite 'este.ui.resizer.Handles', ->
 		dragger =
 			startDrag: ->
 			addEventListener: ->
+			dispose: ->
 		draggerFactory = ->
 			dragger
 		handles = new Handles draggerFactory
@@ -92,51 +101,81 @@ suite 'este.ui.resizer.Handles', ->
 
 	suite 'mousedown on horizontal handle', ->
 		test 'should set horizontal handle as active', ->
-			goog.events.fireListeners handles.horizontal, 'mousedown', false,
-				target: handles.horizontal
+			fireMouseDownOnHorizontalHandle()
 			assert.equal handles.activeHandle, handles.horizontal
 
-		test 'should call dragStart e on dragger returned from factory', (done) ->
+		test 'should register events than call dragStart e on dragger from factory', (done) ->
 			event =
 				target: handles.horizontal
+			count = 0
+			dragger.addEventListener = -> count++
 			dragger.startDrag = (e) ->
 				assert.equal e, event
+				assert.equal count, 3
 				done()
 			goog.events.fireListeners handles.horizontal, 'mousedown', false, event
 
 	suite 'mousedown on vertical handle', ->
 		test 'should set vertical handle as active', ->
-			goog.events.fireListeners handles.vertical, 'mousedown', false,
-				target: handles.vertical
+			fireMouseDownOnVerticalHandle()
 			assert.equal handles.activeHandle, handles.vertical
 
-		test 'should call dragStart e on dragger returned from factory', (done) ->
+		test 'should call register events than call dragStart e on dragger from factory', (done) ->
 			event =
 				target: handles.vertical
+			count = 0
+			dragger.addEventListener = -> count++
 			dragger.startDrag = (e) ->
 				assert.equal e, event
+				assert.equal count, 3
 				done()
 			goog.events.fireListeners handles.vertical, 'mousedown', false, event
 
 	suite 'dragging', ->
-		test 'should dispatch drag event, with properties width, height', (done) ->
-			goog.events.listenOnce handles, 'drag', (e) ->
+		test 'should dispatch start event, with property element', (done) ->
+			goog.events.listenOnce handles, 'start', (e) ->
+				assert.equal e.element, element
 				done()
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+
+		test 'should dispatch drag event, with properties element, width and height', (done) ->
+			goog.events.listenOnce handles, 'drag', (e) ->
+				assert.equal e.width, 15
+				assert.equal e.height, 10
+				assert.equal e.element, element
+				done()
+			fireMouseDownOnVerticalHandle()
 			goog.events.fireListeners dragger, 'start', false,
 				clientX: 10
 				clientY: 20
 			goog.events.fireListeners dragger, 'drag', false,
-				clientX: 20
+				clientX: 25
 				clientY: 30
 
+		# this test smell, investigate it later
+		test 'should call update', (done) ->
+			handles.update = -> done()
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.fireListeners dragger, 'drag', false, {}
 
+	suite 'drag end', ->
+		test 'should dispose dragger', (done) ->
+			fireMouseDownOnVerticalHandle()
+			dragger.dispose = -> done()
+			goog.events.fireListeners dragger, 'end', false, {}
 
+		test 'should dispatch end event', (done) ->
+			fireMouseDownOnVerticalHandle()
+			goog.events.listenOnce handles, 'end', -> done()
+			goog.events.fireListeners dragger, 'end', false, {}
 
-
-
-
-
-
+	suite '#dispose', ->
+		test 'should dispose dragger too', (done) ->
+			fireMouseDownOnVerticalHandle()
+			dragger.dispose = -> done()
+			handles.dispose()
 
 
 

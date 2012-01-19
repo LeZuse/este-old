@@ -7,7 +7,14 @@ suite 'este.ui.Resizer', ->
 	delegationFactory = null
 	handles = null
 	handlesFactory = null
+	handleElement = null
 	resizer = null
+
+	fireDelegationMouseOver = ->
+		goog.events.fireListeners delegation, 'mouseover', false, {}
+
+	fireDelegationMouseOut = ->
+		goog.events.fireListeners delegation, 'mouseout', false, {}
 	
 	setup ->
 		element = document.createElement 'div'
@@ -18,10 +25,15 @@ suite 'este.ui.Resizer', ->
 		handles =
 			vertical: document.createElement 'div'
 			horizontal: document.createElement 'div'
+			addEventListener: ->
 			decorate: ->
 			isHandle: ->
 			dispose: ->
 		handlesFactory = -> handles
+		handleElement =
+			offsetWidth: 50
+			offsetHeight: 60
+			style: {}
 		resizer = new Resizer delegationFactory, handlesFactory
 	
 	suite 'Resizer.create', ->
@@ -30,6 +42,7 @@ suite 'este.ui.Resizer', ->
 			assert.instanceOf resizer, Resizer
 
 	suite '#decorate', ->
+		# maybe we do not need to test if factories was called
 		test 'should call delegationFactory with arguments', (done) ->
 			targetFilter = ->
 			targetParentFilter = ->
@@ -68,8 +81,7 @@ suite 'este.ui.Resizer', ->
 				handles
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
+			fireDelegationMouseOver()
 
 		test 'should decorate handles with event delegation target', (done) ->
 			target = {}
@@ -79,32 +91,22 @@ suite 'este.ui.Resizer', ->
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
 			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
 				target: target
 
 		test 'should dispose yet rendered handles', (done) ->
 			handles.dispose = -> done()
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
-				target: {}
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
-				target: {}
+			fireDelegationMouseOver()
+			goog.events.fireListeners delegation, 'mouseover', false, {}
 
 	suite 'delegation mouseout event on decorated resizer', ->
 		test 'should dispose handles', (done) ->
-			target = {}
 			handles.dispose = -> done()
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
-				target: target
-			goog.events.fireListeners delegation, 'mouseout', false,
-				type: 'mouseout'
-				target: target
+			fireDelegationMouseOver()
+			goog.events.fireListeners delegation, 'mouseout', false, {}
 
 		test 'should not dispose handles if relatedTarget is handle', ->
 			relatedTarget = {}
@@ -113,56 +115,96 @@ suite 'este.ui.Resizer', ->
 			handles.isHandle = (el) -> el == relatedTarget
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
-				target: {}
+			goog.events.fireListeners delegation, 'mouseover', false, {}
 			goog.events.fireListeners delegation, 'mouseout', false,
-				type: 'mouseout'
-				target: {}
 				relatedTarget: relatedTarget
 			assert.isFalse called
 
 	suite '#dispose', ->
 		test 'should dispose handles on decorated resizer', (done) ->
-			target = {}
 			handles.dispose = -> done()
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
-				target: target
+			goog.events.fireListeners delegation, 'mouseover', false, {}
 			resizer.dispose()
 
 	suite 'mouseout on shown handles', ->
 		test 'should dispose handles for vertical handle', (done) ->
-			target = {}
 			handles.dispose = ->
 				assert.equal goog.events.getTotalListenerCount(), listenersCount
 				done()
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
 			listenersCount = goog.events.getTotalListenerCount()
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
-				target: target
-			goog.events.fireListeners handles.vertical, 'mouseout', false,
-				type: 'mouseout'
-				target: target
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles.vertical, 'mouseout', false, {}
 
 		test 'should dispose handles for horizontal handle', (done) ->
-			target = {}
 			handles.dispose = ->
 				assert.equal goog.events.getTotalListenerCount(), listenersCount
 				done()
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
 			listenersCount = goog.events.getTotalListenerCount()
-			goog.events.fireListeners delegation, 'mouseover', false,
-				type: 'mouseover'
-				target: target
-			goog.events.fireListeners handles.horizontal, 'mouseout', false,
-				type: 'mouseout'
-				target: target		
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles.horizontal, 'mouseout', false, {}
+
+	suite 'start and drag events of handles', ->
+		test 'should set size of handle element', ->
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false,
+				element: handleElement
+			goog.events.fireListeners handles, 'drag', false,
+				width: 10
+				height: 20
+				element: handleElement
+			assert.equal handleElement.style.width, '60px'
+			assert.equal handleElement.style.height, '80px'
+
+	suite 'handles start event before delegation mouseover', ->
+		test 'should not dispose handles', ->
+			called = false
+			handles.dispose = -> called = true
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false, element: handleElement
+			fireDelegationMouseOver()
+			assert.isFalse called
+
+		test 'should dispose handles', ->
+			called = false
+			handles.dispose = -> called = true
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false, element: handleElement
+			goog.events.fireListeners handles, 'end', false, element: handleElement
+			fireDelegationMouseOver()
+			assert.isTrue called
+
+	suite 'handles start event before delegation mouseout', ->
+		test 'should not dispose handles', ->
+			called = false
+			handles.dispose = -> called = true
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false, element: handleElement
+			fireDelegationMouseOut()
+			assert.isFalse called
+
+		test 'should dispose handles', ->
+			called = false
+			handles.dispose = -> called = true
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false, element: handleElement
+			goog.events.fireListeners handles, 'end', false, element: handleElement
+			fireDelegationMouseOut()
+			assert.isTrue called
 
 
 
@@ -174,4 +216,8 @@ suite 'este.ui.Resizer', ->
 
 
 
-	
+
+
+
+
+

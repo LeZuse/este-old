@@ -49,7 +49,7 @@ goog.scope ->
 	OOPLightbox::view
 
 	###*
-		@inheritDoc
+		@override
 	###
 	OOPLightbox::decorateInternal = (element) ->
 		goog.base @, 'decorateInternal', element
@@ -57,7 +57,7 @@ goog.scope ->
 		return
 
 	###*
-		@inheritDoc
+		@override
 	###
 	OOPLightbox::enterDocument = ->
 		goog.base @, 'enterDocument'

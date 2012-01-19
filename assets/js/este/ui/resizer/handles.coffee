@@ -6,6 +6,7 @@ goog.provide 'este.ui.resizer.Handles.create'
 
 goog.require 'goog.ui.Component'
 goog.require 'goog.fx.Dragger'
+goog.require 'goog.math.Coordinate'
 
 ###*
 	@param {Function} draggerFactory
@@ -29,6 +30,14 @@ goog.scope ->
 			dragger = new goog.fx.Dragger document.createElement 'div'
 			dragger
 		new _ draggerFactory
+
+	###*
+		@enum {string}
+	###
+	_.EventType =
+		START: 'start'
+		DRAG: 'drag'
+		END: 'end'
 
 	###*
 		@type {Element}
@@ -56,7 +65,12 @@ goog.scope ->
 	_::dragger
 
 	###*
-		@inheritDoc
+		@type {!goog.math.Coordinate}
+	###
+	_::dragMouseStart
+
+	###*
+		@override
 	###
 	_::decorateInternal = (element) ->
 		goog.base @, 'decorateInternal', element
@@ -75,7 +89,7 @@ goog.scope ->
 		parent.appendChild @horizontal
 
 	###*
-		@protected
+		Update handles bounds.
 	###
 	_::update = ->
 		el = @getElement()
@@ -88,7 +102,7 @@ goog.scope ->
 		style.setHeight @vertical, el.offsetHeight
 
 	###*
-		@inheritDoc
+		@override
 	###
 	_::enterDocument = ->
 		goog.base @, 'enterDocument'
@@ -117,29 +131,52 @@ goog.scope ->
 	###
 	_::startDrag = (e) ->
 		@dragger = @draggerFactory()
-		@dragger.startDrag e
 		@getHandler().
 			listen(@dragger, 'start', @onDragStart).
-			listen(@dragger, 'drag', @onDrag)
+			listen(@dragger, 'drag', @onDrag).
+			listen(@dragger, 'end', @onDragEnd)
+		@dragger.startDrag e
 
 	###*
-		@param {goog.events.BrowserEvent} e
+		@param {goog.fx.DragEvent} e
 		@protected
 	###
 	_::onDragStart = (e) ->
+		@dragMouseStart = new goog.math.Coordinate e.clientX, e.clientY
+		@dispatchEvent
+			element: @getElement()
+			type: _.EventType.START
 
 	###*
-		@param {goog.events.BrowserEvent} e
+		@param {goog.fx.DragEvent} e
 		@protected
 	###
 	_::onDrag = (e) ->
+		mouseCoord = new goog.math.Coordinate e.clientX, e.clientY
+		difference = goog.math.Coordinate.difference mouseCoord, @dragMouseStart
+		@dispatchEvent
+			element: @getElement()
+			type: _.EventType.DRAG
+			width: difference.x
+			height: difference.y
+		@update()
 
 	###*
-		@inheritDoc
+		@param {goog.fx.DragEvent} e
+		@protected
+	###
+	_::onDragEnd = (e) ->
+		@dragger.dispose()
+		@dispatchEvent
+			type: _.EventType.END
+
+	###*
+		@override
 	###
 	_::disposeInternal = ->
 		@dom_.removeNode @horizontal
 		@dom_.removeNode @vertical
+		@dragger.dispose() if @dragger
 		goog.base @, 'disposeInternal'
 		return
 

@@ -41,7 +41,7 @@ goog.scope ->
 	View::anchors
 
 	###*
-		@inheritDoc
+		@override
 	###
 	View::createDom = ->
 		goog.base @, 'createDom'
@@ -71,7 +71,7 @@ goog.scope ->
 			</div>"
 
 	###*
-		@inheritDoc
+		@override
 	###
 	View::enterDocument = ->
 		goog.base @, 'enterDocument'

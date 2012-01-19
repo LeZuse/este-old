@@ -18,7 +18,7 @@ goog.scope ->
 	`var AnchorClickHandler = este.ui.ooplightbox.AnchorClickHandler`
 
 	###*
-		@inheritDoc
+		@override
 	###
 	AnchorClickHandler::enterDocument = ->
 		goog.base @, 'enterDocument'

@@ -98,7 +98,7 @@ goog.scope ->
 		true
 
 	###*
-		@inheritDoc
+		@override
 	###
 	_::disposeInternal = ->
 		goog.base @, 'disposeInternal'

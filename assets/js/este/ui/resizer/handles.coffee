@@ -5,12 +5,14 @@ goog.provide 'este.ui.resizer.Handles'
 goog.provide 'este.ui.resizer.Handles.create'
 
 goog.require 'goog.ui.Component'
+goog.require 'goog.fx.Dragger'
 
 ###*
+	@param {Function} draggerFactory
 	@constructor
 	@extends {goog.ui.Component}
 ###
-este.ui.resizer.Handles = ->
+este.ui.resizer.Handles = (@draggerFactory) ->
 	return
 
 goog.inherits este.ui.resizer.Handles, goog.ui.Component
@@ -23,7 +25,10 @@ goog.scope ->
 		@return {este.ui.resizer.Handles}
 	###
 	_.create = ->
-		new _
+		draggerFactory = ->
+			dragger = new goog.fx.Dragger document.createElement 'div'
+			dragger
+		new _ draggerFactory
 
 	###*
 		@type {Element}
@@ -41,6 +46,16 @@ goog.scope ->
 	_::activeHandle
 
 	###*
+		@type {Function}
+	###
+	_::draggerFactory
+
+	###*
+		@type {goog.fx.Dragger}
+	###
+	_::dragger
+
+	###*
 		@inheritDoc
 	###
 	_::decorateInternal = (element) ->
@@ -50,29 +65,7 @@ goog.scope ->
 		return
 
 	###*
-		@inheritDoc
-	###
-	_::enterDocument = ->
-		goog.base @, 'enterDocument'
-		@getHandler().
-			listen(@horizontal, 'mousedown', @onHorizontalMouseDown).
-			listen(@vertical, 'mousedown', @onVerticalMouseDown)
-		return
-
-	###*
-		@param {goog.events.BrowserEvent}
-	###
-	_::onHorizontalMouseDown = (e) ->
-		@activeHandle = @horizontal
-
-	###*
-		@param {goog.events.BrowserEvent}
-	###
-	_::onVerticalMouseDown = (e) ->
-		@activeHandle = @vertical
-
-	###*
-		@inheritDoc
+		@protected
 	###
 	_::createHandles = ->
 		@vertical = @dom_.createDom 'div', 'este-resizer-handle-vertical'
@@ -81,6 +74,9 @@ goog.scope ->
 		parent.appendChild @vertical
 		parent.appendChild @horizontal
 
+	###*
+		@protected
+	###
 	_::update = ->
 		el = @getElement()
 		left = el.offsetLeft 
@@ -94,6 +90,53 @@ goog.scope ->
 	###*
 		@inheritDoc
 	###
+	_::enterDocument = ->
+		goog.base @, 'enterDocument'
+		@getHandler().
+			listen(@horizontal, 'mousedown', @onHorizontalMouseDown).
+			listen(@vertical, 'mousedown', @onVerticalMouseDown)
+		return
+
+	###*
+		@param {goog.events.BrowserEvent} e
+	###
+	_::onHorizontalMouseDown = (e) ->
+		@activeHandle = @horizontal
+		@startDrag e
+
+	###*
+		@param {goog.events.BrowserEvent} e
+	###
+	_::onVerticalMouseDown = (e) ->
+		@activeHandle = @vertical
+		@startDrag e
+
+	###*
+		@param {goog.events.BrowserEvent} e
+		@protected
+	###
+	_::startDrag = (e) ->
+		@dragger = @draggerFactory()
+		@dragger.startDrag e
+		@getHandler().
+			listen(@dragger, 'start', @onDragStart).
+			listen(@dragger, 'drag', @onDrag)
+
+	###*
+		@param {goog.events.BrowserEvent} e
+		@protected
+	###
+	_::onDragStart = (e) ->
+
+	###*
+		@param {goog.events.BrowserEvent} e
+		@protected
+	###
+	_::onDrag = (e) ->
+
+	###*
+		@inheritDoc
+	###
 	_::disposeInternal = ->
 		@dom_.removeNode @horizontal
 		@dom_.removeNode @vertical
@@ -101,7 +144,7 @@ goog.scope ->
 		return
 
 	###*
-		@param {Element} element
+		@param {Node} element
 	###
 	_::isHandle = (element) ->
 		element in [@vertical, @horizontal]

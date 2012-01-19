@@ -1,7 +1,8 @@
 ###*
 	@fileoverview
 	todo
-		nejak mizi kurzor, pokud najedu na handles z vnejsku.. asi rendering bug(force reflow?)
+		mouse cursor style is missing on handles when reaached from out,
+		chrome rendering bug probably
 ###
 goog.provide 'este.ui.Resizer'
 
@@ -43,21 +44,21 @@ goog.scope ->
 	_::handlesFactory
 
 	###*
-		@param {Element}
+		@param {Element} element
 		@return {boolean}
 	###
 	_::targetFilter = (element) ->
 		true
 
 	###*
-		@param {Element}
+		@param {Element} element
 		@return {boolean}
 	###
 	_::targetParentFilter = (element) ->
 		true
 
 	###*
-		@type {este.ui.Delegation}
+		@type {este.events.Delegation}
 		@protected
 	###
 	_::delegation
@@ -90,7 +91,7 @@ goog.scope ->
 		return
 
 	###*
-		@param {goog.events.BrowserEvent}
+		@param {goog.events.BrowserEvent} e
 	###
 	_::onMouseOver = (e) ->
 		@handles.dispose() if @handles
@@ -100,7 +101,7 @@ goog.scope ->
 		@getHandler().listen @handles.horizontal, 'mouseout', @onMouseOut
 
 	###*
-		@param {goog.events.BrowserEvent}
+		@param {goog.events.BrowserEvent} e
 	###
 	_::onMouseOut = (e) ->
 		return if @handles.isHandle e.relatedTarget

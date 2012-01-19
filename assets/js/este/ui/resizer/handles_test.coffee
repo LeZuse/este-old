@@ -1,3 +1,5 @@
+# consider: should dispose previously registered drag on second click? test in ui
+
 suite 'este.ui.resizer.Handles', ->
 
 	Handles = este.ui.resizer.Handles
@@ -5,6 +7,8 @@ suite 'este.ui.resizer.Handles', ->
 	element = null
 	handles = null
 	offsetParent = null
+	dragger = {}
+	draggerFactory = null
 
 	setup ->
 		element = document.createElement 'div'
@@ -14,7 +18,12 @@ suite 'este.ui.resizer.Handles', ->
 		element.offsetHeight = 200
 		offsetParent = document.createElement 'div'
 		element.offsetParent = offsetParent
-		handles = new Handles
+		dragger =
+			startDrag: ->
+			addEventListener: ->
+		draggerFactory = ->
+			dragger
+		handles = new Handles draggerFactory
 		handles.decorate element
 
 	suite 'Handles.create', ->
@@ -87,14 +96,54 @@ suite 'este.ui.resizer.Handles', ->
 				target: handles.horizontal
 			assert.equal handles.activeHandle, handles.horizontal
 
-		test 'should call dragger factory', ->
-			
+		test 'should call dragStart e on dragger returned from factory', (done) ->
+			event =
+				target: handles.horizontal
+			dragger.startDrag = (e) ->
+				assert.equal e, event
+				done()
+			goog.events.fireListeners handles.horizontal, 'mousedown', false, event
 
 	suite 'mousedown on vertical handle', ->
 		test 'should set vertical handle as active', ->
 			goog.events.fireListeners handles.vertical, 'mousedown', false,
 				target: handles.vertical
 			assert.equal handles.activeHandle, handles.vertical
+
+		test 'should call dragStart e on dragger returned from factory', (done) ->
+			event =
+				target: handles.vertical
+			dragger.startDrag = (e) ->
+				assert.equal e, event
+				done()
+			goog.events.fireListeners handles.vertical, 'mousedown', false, event
+
+	suite 'dragging', ->
+		test 'should dispatch drag event, with properties width, height', (done) ->
+			goog.events.listenOnce handles, 'drag', (e) ->
+				done()
+			goog.events.fireListeners dragger, 'start', false,
+				clientX: 10
+				clientY: 20
+			goog.events.fireListeners dragger, 'drag', false,
+				clientX: 20
+				clientY: 30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

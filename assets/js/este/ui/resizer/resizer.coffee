@@ -1,5 +1,7 @@
 ###*
 	@fileoverview
+	todo
+		nejak mizi kurzor, pokud najedu na handles z vnejsku.. asi rendering bug(force reflow?)
 ###
 goog.provide 'este.ui.Resizer'
 

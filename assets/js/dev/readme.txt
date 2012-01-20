@@ -27,3 +27,16 @@ TODO
 
 	Useful plugins and key shortcuts for Sublimetext
 		zencodding..
+
+	
+TRAPS
+
+Access to protected property... from Compiler
+You probably forget to add doc comment:
+###*
+	@override
+###
+Do not forget asterisk.
+
+
+

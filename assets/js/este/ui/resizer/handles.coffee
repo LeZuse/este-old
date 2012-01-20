@@ -1,5 +1,8 @@
 ###*
 	@fileoverview
+
+	todo
+		drag cursor does not work in mac chrome
 ###
 goog.provide 'este.ui.resizer.Handles'
 goog.provide 'este.ui.resizer.Handles.create'
@@ -158,6 +161,7 @@ goog.scope ->
 		@invisibleOverlay = @invisibleOverlayFactory()
 		@addChild @invisibleOverlay, false
 		@invisibleOverlay.render @dom_.getDocument().body
+		@invisibleOverlay.getElement().style.cursor = goog.style.getComputedCursor @activeHandle
 		@dragMouseStart = new goog.math.Coordinate e.clientX, e.clientY
 		@dispatchEvent
 			element: @getElement()

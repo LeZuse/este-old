@@ -252,6 +252,18 @@ suite 'este.ui.resizer.Handles', ->
 			goog.events.fireListeners dragger, 'start', false, {}
 			assert.equal invisibleOverlay.getElement().parentNode, handles.dom_.getDocument().body
 
+		test 'should render invisible overlay with same cursor as activeHandle', ->
+			fireMouseDownOnVerticalHandle()
+			handles.vertical.__style.cursor = 'fok'
+			goog.events.fireListeners dragger, 'start', false, {}
+			assert.equal invisibleOverlay.getElement().style.cursor, 'fok'
+
+		test 'should render invisible overlay with same cursor as activeHandle', ->
+			fireMouseDownOnHorizontalHandle()
+			handles.horizontal.__style.cursor = 'foo'
+			goog.events.fireListeners dragger, 'start', false, {}
+			assert.equal invisibleOverlay.getElement().style.cursor, 'foo'
+
 	suite 'drag end event', ->
 		test 'should unrender invisible overlay', ->
 			exitDocumentCalled = false

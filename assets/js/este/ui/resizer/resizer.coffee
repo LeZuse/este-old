@@ -1,7 +1,7 @@
 ###*
 	@fileoverview
 	todo
-		mouse cursor style is missing on handles when reaached from out,
+		mouse cursor style is missing on handles when reached from out,
 		chrome rendering bug probably
 ###
 goog.provide 'este.ui.Resizer'

@@ -151,8 +151,16 @@ goog.scope ->
 	_::onDrag = (e) ->
 		width = @activeElementSize.width + e.width
 		height = @activeElementSize.height + e.height
-		e.element.style.width = width + 'px'
-		e.element.style.height = height + 'px'
+		if e.element.tagName != 'IMG'
+			e.element.style.width = width + 'px'
+			e.element.style.height = height + 'px'
+			return
+		if e.vertical
+			e.element.style.width = width + 'px'
+			e.element.style.height = 'auto'
+		else
+			e.element.style.width = 'auto'
+			e.element.style.height = height + 'px'			
 
 	###*
 		@param {Object} e

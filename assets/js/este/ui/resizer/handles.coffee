@@ -145,6 +145,7 @@ goog.scope ->
 		@dragMouseStart = new goog.math.Coordinate e.clientX, e.clientY
 		@dispatchEvent
 			element: @getElement()
+			vertical: @activeHandle == @vertical
 			type: _.EventType.START
 
 	###*
@@ -156,6 +157,7 @@ goog.scope ->
 		difference = goog.math.Coordinate.difference mouseCoord, @dragMouseStart
 		@dispatchEvent
 			element: @getElement()
+			vertical: @activeHandle == @vertical
 			type: _.EventType.DRAG
 			width: difference.x
 			height: difference.y

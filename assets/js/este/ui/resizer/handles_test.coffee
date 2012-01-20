@@ -139,6 +139,36 @@ suite 'este.ui.resizer.Handles', ->
 			fireMouseDownOnVerticalHandle()
 			goog.events.fireListeners dragger, 'start', false, {}
 
+		test 'should dispatch start event, with property vertical true', (done) ->
+			goog.events.listenOnce handles, 'start', (e) ->
+				assert.equal e.vertical, true
+				done()
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+
+		test 'should dispatch drag event, with property vertical true', (done) ->
+			goog.events.listenOnce handles, 'drag', (e) ->
+				assert.equal e.vertical, true
+				done()
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.fireListeners dragger, 'drag', false, {}
+
+		test 'should dispatch start event, with property vertical false', (done) ->
+			goog.events.listenOnce handles, 'start', (e) ->
+				assert.equal e.vertical, false
+				done()
+			fireMouseDownOnHorizontalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+
+		test 'should dispatch start event, with property vertical false', (done) ->
+			goog.events.listenOnce handles, 'drag', (e) ->
+				assert.equal e.vertical, false
+				done()
+			fireMouseDownOnHorizontalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.fireListeners dragger, 'drag', false, {}
+
 		test 'should dispatch drag event, with properties element, width and height', (done) ->
 			goog.events.listenOnce handles, 'drag', (e) ->
 				assert.equal e.width, 15
@@ -153,12 +183,36 @@ suite 'este.ui.resizer.Handles', ->
 				clientX: 25
 				clientY: 30
 
-		# this test smell, investigate it later
-		test 'should call update', (done) ->
-			handles.update = -> done()
+		test 'drag should update handles bounds', ->
+			element.offsetLeft = 30
+			element.offsetTop = 40
+			element.offsetWidth = 110
+			element.offsetHeight = 210
+			
+			handles.update()
+			
+			assert.equal handles.horizontal.style.left, '30px'
+			assert.equal handles.horizontal.style.top, '250px'
+			assert.equal handles.horizontal.style.width, '110px'
+			assert.equal handles.vertical.style.left, '140px'
+			assert.equal handles.vertical.style.top, '40px'
+			assert.equal handles.vertical.style.height, '210px'
+
 			fireMouseDownOnVerticalHandle()
 			goog.events.fireListeners dragger, 'start', false, {}
+			
+			element.offsetLeft = 31
+			element.offsetTop = 42
+			element.offsetWidth = 113
+			element.offsetHeight = 214
 			goog.events.fireListeners dragger, 'drag', false, {}
+			assert.equal handles.horizontal.style.left, '31px'
+			assert.equal handles.horizontal.style.top, '256px'
+			assert.equal handles.horizontal.style.width, '113px'
+			assert.equal handles.vertical.style.left, '144px'
+			assert.equal handles.vertical.style.top, '42px'
+			assert.equal handles.vertical.style.height, '214px'
+			
 
 	suite 'drag end', ->
 		test 'should dispose dragger', (done) ->

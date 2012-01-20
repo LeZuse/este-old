@@ -9,6 +9,9 @@ suite 'este.ui.resizer.Handles', ->
 	offsetParent = null
 	dragger = null
 	draggerFactory = null
+	invisibleOverlay = null
+	invisibleOverlayFactory = ->
+		invisibleOverlay
 
 	fireMouseDownOnVerticalHandle = ->
 		goog.events.fireListeners handles.vertical, 'mousedown', false,
@@ -32,7 +35,8 @@ suite 'este.ui.resizer.Handles', ->
 			dispose: ->
 		draggerFactory = ->
 			dragger
-		handles = new Handles draggerFactory
+		invisibleOverlay = new goog.ui.Component
+		handles = new Handles draggerFactory, invisibleOverlayFactory
 		handles.decorate element
 
 	suite 'Handles.create', ->
@@ -218,10 +222,12 @@ suite 'este.ui.resizer.Handles', ->
 		test 'should dispose dragger', (done) ->
 			fireMouseDownOnVerticalHandle()
 			dragger.dispose = -> done()
+			goog.events.fireListeners dragger, 'start', false, {}
 			goog.events.fireListeners dragger, 'end', false, {}
 
 		test 'should dispatch end event', (done) ->
 			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
 			goog.events.listenOnce handles, 'end', -> done()
 			goog.events.fireListeners dragger, 'end', false, {}
 
@@ -230,6 +236,32 @@ suite 'este.ui.resizer.Handles', ->
 			fireMouseDownOnVerticalHandle()
 			dragger.dispose = -> done()
 			handles.dispose()
+
+		test 'should unrender invisible overlay', ->
+			exitDocumentCalled = false
+			invisibleOverlay.exitDocument = -> exitDocumentCalled = true
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.fireListeners dragger, 'end', false, {}
+			assert.isTrue exitDocumentCalled
+			assert.isNull invisibleOverlay.getElement().parentNode
+
+	suite 'drag start event', ->
+		test 'should render invisible overlay into handles document body', ->
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			assert.equal invisibleOverlay.getElement().parentNode, handles.dom_.getDocument().body
+
+	suite 'drag end event', ->
+		test 'should unrender invisible overlay', ->
+			exitDocumentCalled = false
+			invisibleOverlay.exitDocument = -> exitDocumentCalled = true
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.fireListeners dragger, 'end', false, {}
+			assert.isTrue exitDocumentCalled
+			assert.isNull invisibleOverlay.getElement().parentNode
+
 
 
 

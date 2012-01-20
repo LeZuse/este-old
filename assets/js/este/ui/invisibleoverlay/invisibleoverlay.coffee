@@ -2,6 +2,7 @@
 	@fileoverview
 ###
 goog.provide 'este.ui.InvisibleOverlay'
+goog.provide 'este.ui.InvisibleOverlay.create'
 
 goog.require 'goog.ui.Component'
 

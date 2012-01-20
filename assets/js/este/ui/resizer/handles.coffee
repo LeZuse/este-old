@@ -8,12 +8,15 @@ goog.require 'goog.ui.Component'
 goog.require 'goog.fx.Dragger'
 goog.require 'goog.math.Coordinate'
 
+goog.require 'este.ui.InvisibleOverlay.create'
+
 ###*
 	@param {Function} draggerFactory
+	@param {Function} invisibleOverlayFactory
 	@constructor
 	@extends {goog.ui.Component}
 ###
-este.ui.resizer.Handles = (@draggerFactory) ->
+este.ui.resizer.Handles = (@draggerFactory, @invisibleOverlayFactory) ->
 	return
 
 goog.inherits este.ui.resizer.Handles, goog.ui.Component
@@ -29,7 +32,7 @@ goog.scope ->
 		draggerFactory = ->
 			dragger = new goog.fx.Dragger document.createElement 'div'
 			dragger
-		new _ draggerFactory
+		new _ draggerFactory, este.ui.InvisibleOverlay.create
 
 	###*
 		@enum {string}
@@ -60,6 +63,11 @@ goog.scope ->
 	_::draggerFactory
 
 	###*
+		@type {Function}
+	###
+	_::invisibleOverlayFactory
+
+	###*
 		@type {goog.fx.Dragger}
 	###
 	_::dragger
@@ -68,6 +76,11 @@ goog.scope ->
 		@type {!goog.math.Coordinate}
 	###
 	_::dragMouseStart
+
+	###*
+		@type {este.ui.InvisibleOverlay}
+	###
+	_::invisibleOverlay
 
 	###*
 		@override
@@ -142,6 +155,9 @@ goog.scope ->
 		@protected
 	###
 	_::onDragStart = (e) ->
+		@invisibleOverlay = @invisibleOverlayFactory()
+		@addChild @invisibleOverlay, false
+		@invisibleOverlay.render @dom_.getDocument().body
 		@dragMouseStart = new goog.math.Coordinate e.clientX, e.clientY
 		@dispatchEvent
 			element: @getElement()
@@ -168,6 +184,7 @@ goog.scope ->
 		@protected
 	###
 	_::onDragEnd = (e) ->
+		@removeChild @invisibleOverlay, true
 		@dragger.dispose()
 		@dispatchEvent
 			type: _.EventType.END

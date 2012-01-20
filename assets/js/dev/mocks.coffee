@@ -10,6 +10,7 @@ global.assert = require('/usr/local/lib/node_modules/chai').assert
 ###
 global.document =
 	addEventListener: ->
+	# todo: use constructor
 	createElement: (tag) ->
 		offsetWidth: 0
 		offsetHeight: 0
@@ -20,12 +21,18 @@ global.document =
 		style:
 			opacity: 1
 		__style: {}
+		childNodes: []
 		appendChild: (node) ->
+			@childNodes.push node
 			node.parentNode = @
 			node
 		removeChild: (node) ->
-			node.parentNode = null if node.parentNode == @
+			node.parentNode = null
 			node
+		insertBefore: (newElement, referenceElement) ->
+			idx = @childNodes.indexOf referenceElement
+			@childNodes.splice idx, 0, newElement
+			newElement.parentNode = @
 		addEventListener: ->
 	defaultView:
 		getComputedStyle: (element) ->
@@ -48,4 +55,5 @@ global.document =
 			style[k] = v for k, v of element.__style
 			style
 
-global.document.body = global.document.createElement 'body'
+html = global.document.createElement 'html'
+global.document.body = html.appendChild global.document.createElement 'body'

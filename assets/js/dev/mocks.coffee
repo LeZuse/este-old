@@ -17,7 +17,8 @@ global.document =
 		nodeType: 1
 		className: ''
 		ownerDocument: global.document
-		style: {}
+		style:
+			opacity: 1
 		__style: {}
 		appendChild: (node) ->
 			node.parentNode = @

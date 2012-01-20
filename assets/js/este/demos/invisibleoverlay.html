@@ -1,0 +1,21 @@
+<!doctype html>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+	<title>este.ui.InvisibleOverlay</title>
+	<script src='/assets/js/google-closure/closure/goog/base.js'></script>
+	<script src='/assets/js/deps.js'></script>
+	<script>
+		goog.require('este.ui.InvisibleOverlay');
+	</script>
+</head>
+<body>
+	<h1>este.ui.InvisibleOverlay</h1>
+	<p>This link should not be clickable: <a href="http://google.com">google.com</a>.</p>
+	<script>
+		
+		var overlay = new este.ui.InvisibleOverlay;
+		overlay.render(document.body);
+
+	</script>	
+</body>

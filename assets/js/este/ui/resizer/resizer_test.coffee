@@ -148,8 +148,6 @@ suite 'este.ui.Resizer', ->
 
 	suite 'start and drag events of handles', ->
 		test 'should set size of handles element', ->
-			element.__style.borderLeftWidth = 2
-			element.__style.borderTopWidth = 2
 			resizer.decorate element
 			fireDelegationMouseOver()
 			goog.events.fireListeners handles, 'start', false,
@@ -158,8 +156,22 @@ suite 'este.ui.Resizer', ->
 				width: 10
 				height: 20
 				element: element
-			assert.equal element.style.width, '58px'
-			assert.equal element.style.height, '78px'
+			assert.equal element.style.width, '60px'
+			assert.equal element.style.height, '80px'
+
+		test 'should set size of handles element with border', ->
+			element.__style.borderLeftWidth = 20
+			element.__style.borderTopWidth = 10
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false,
+				element: element
+			goog.events.fireListeners handles, 'drag', false,
+				width: 10
+				height: 20
+				element: element
+			assert.equal element.style.width, '40px'
+			assert.equal element.style.height, '70px'
 
 	suite 'handles start event before delegation mouseover', ->
 		test 'should not dispose handles', ->

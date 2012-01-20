@@ -18,6 +18,7 @@ global.document =
 		className: ''
 		ownerDocument: global.document
 		style: {}
+		__style: {}
 		appendChild: (node) ->
 			node.parentNode = @
 			node
@@ -28,8 +29,8 @@ global.document =
 	defaultView:
 		getComputedStyle: (element) ->
 			# this is how we can foist computed styles for every element
-			element.__styles = element.__styles || {}
-			styles =
+			element.__style = element.__style || {}
+			style =
 				paddingLeft: 0
 				paddingRight: 0
 				paddingTop: 0
@@ -43,7 +44,7 @@ global.document =
 				borderTopWidth: 0
 				borderBottomWidth: 0
 				getPropertyValue: -> 0
-			styles[k] = v for k, v of element.__styles
-			styles
+			style[k] = v for k, v of element.__style
+			style
 
 global.document.body = global.document.createElement 'body'

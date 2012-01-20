@@ -142,7 +142,7 @@ goog.scope ->
 	###
 	_::onDragStart = (e) ->
 		`var el = /** @type {Element} */ (e.element)`
-		@activeElementSize = goog.style.getBorderBoxSize el
+		@activeElementSize = goog.style.getContentBoxSize el
 		@dragging = true
 		
 	###*

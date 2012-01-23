@@ -3,7 +3,6 @@
 	todo
 		mouse cursor style is missing on handles when reached from out,
 		chrome rendering bug probably
-		dispose handles only when mouse cursor is out of them on dragend
 ###
 goog.provide 'este.ui.Resizer'
 
@@ -127,8 +126,7 @@ goog.scope ->
 		@handles = @handlesFactory()
 		@handles.decorate e.target
 		@getHandler().
-			listen(@handles.vertical, 'mouseout', @onDelegationMouseOut).
-			listen(@handles.horizontal, 'mouseout', @onDelegationMouseOut).
+			listen(@handles, 'mouseout', @onDelegationMouseOut).
 			listen(@handles, 'start', @onDragStart).
 			listen(@handles, 'drag', @onDrag).
 			listen(@handles, 'end', @onDragEnd)
@@ -139,13 +137,6 @@ goog.scope ->
 	###
 	_::onDelegationMouseOut = (e) ->
 		return if @dragging || @handles.isHandle e.relatedTarget
-		@getHandler().
-			unlisten(@handles.vertical, 'mouseout', @onDelegationMouseOut).
-			unlisten(@handles.horizontal, 'mouseout', @onDelegationMouseOut).
-			unlisten(@handles, 'start', @onDragStart).
-			unlisten(@handles, 'drag', @onDrag).
-			unlisten(@handles, 'end', @onDragEnd)
-
 		@handles.dispose()
 
 	###*
@@ -177,11 +168,8 @@ goog.scope ->
 		@param {Object} e
 	###
 	_::onDragEnd = (e) ->
-		@getHandler().
-			unlisten(@handles.vertical, 'mouseout', @onDelegationMouseOut).
-			unlisten(@handles.horizontal, 'mouseout', @onDelegationMouseOut)
 		@dragging = false
-		@handles.dispose()
+		@handles.dispose() if e.close
 
 	return
 

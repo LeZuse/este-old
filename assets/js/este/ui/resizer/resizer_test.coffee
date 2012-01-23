@@ -126,26 +126,14 @@ suite 'este.ui.Resizer', ->
 			goog.events.fireListeners delegation, 'mouseover', false, {}
 			resizer.dispose()
 
-	suite 'mouseout on shown handles', ->
-		test 'should dispose handles for vertical handle', (done) ->
+	suite 'mouseout on handles', ->
+		test 'should dispose handles', (done) ->
 			handles.dispose = ->
-				assert.equal goog.events.getTotalListenerCount(), listenersCount
 				done()
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
-			listenersCount = goog.events.getTotalListenerCount()
 			fireDelegationMouseOver()
-			goog.events.fireListeners handles.vertical, 'mouseout', false, {}
-
-		test 'should dispose handles for horizontal handle', (done) ->
-			handles.dispose = ->
-				assert.equal goog.events.getTotalListenerCount(), listenersCount
-				done()
-			resizer = new Resizer delegationFactory, handlesFactory
-			resizer.decorate element
-			listenersCount = goog.events.getTotalListenerCount()
-			fireDelegationMouseOver()
-			goog.events.fireListeners handles.horizontal, 'mouseout', false, {}
+			goog.events.fireListeners handles, 'mouseout', false, {}
 
 	suite 'handles start event before delegation mouseover', ->
 		test 'should not dispose handles', ->
@@ -165,7 +153,7 @@ suite 'este.ui.Resizer', ->
 			resizer.decorate element
 			fireDelegationMouseOver()
 			goog.events.fireListeners handles, 'start', false, element: element
-			goog.events.fireListeners handles, 'end', false, element: element
+			goog.events.fireListeners handles, 'end', false, {}
 			fireDelegationMouseOver()
 			assert.isTrue called
 
@@ -187,7 +175,7 @@ suite 'este.ui.Resizer', ->
 			resizer.decorate element
 			fireDelegationMouseOver()
 			goog.events.fireListeners handles, 'start', false, element: element
-			goog.events.fireListeners handles, 'end', false, element: element
+			goog.events.fireListeners handles, 'end', false, {}
 			fireDelegationMouseOut()
 			assert.isTrue called
 
@@ -261,21 +249,26 @@ suite 'este.ui.Resizer', ->
 			assert.equal element.style.height, '10px'
 
 	suite 'handles drag end event', ->
-		test 'should dispose handles', ->
+		test 'should dispose handles if e.close is true', ->
+			called = false
+			handles.dispose = -> called = true
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
 			fireDelegationMouseOver()
 			goog.events.fireListeners handles, 'start', false, element: element
-			goog.events.fireListeners handles, 'end', false, element: element
-			assert.isFalse goog.events.hasListener handles.vertical, 'mouseout', false
-			assert.isFalse goog.events.hasListener handles.horizontal, 'mouseout', false
-			assert.isTrue handles.disposed_
-			
+			goog.events.fireListeners handles, 'end', false, close: true
+			assert.isTrue called
 
-	
-			
+		test 'should dispose handles if e.close is true', ->
+			called = false
+			handles.dispose = -> called = true
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false, element: element
+			goog.events.fireListeners handles, 'end', false, close: false
+			assert.isFalse called
 
-			
 
 
 

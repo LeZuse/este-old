@@ -41,6 +41,8 @@ goog.scope ->
 		@enum {string}
 	###
 	_.EventType =
+		# just relayed event from handles elements
+		MOUSEOUT: 'mouseout'
 		START: 'start'
 		DRAG: 'drag'
 		END: 'end'
@@ -124,7 +126,9 @@ goog.scope ->
 		goog.base @, 'enterDocument'
 		@getHandler().
 			listen(@horizontal, 'mousedown', @onHorizontalMouseDown).
-			listen(@vertical, 'mousedown', @onVerticalMouseDown)
+			listen(@vertical, 'mousedown', @onVerticalMouseDown).
+			listen(@horizontal, 'mouseout', @onMouseOut).
+			listen(@vertical, 'mouseout', @onMouseOut)
 		return
 
 	###*
@@ -140,6 +144,12 @@ goog.scope ->
 	_::onVerticalMouseDown = (e) ->
 		@activeHandle = @vertical
 		@startDrag e
+
+	###*
+		@param {goog.events.BrowserEvent} e
+	###
+	_::onMouseOut = (e) ->
+		@dispatchEvent e
 
 	###*
 		@param {goog.events.BrowserEvent} e
@@ -192,6 +202,16 @@ goog.scope ->
 		@dragger.dispose()
 		@dispatchEvent
 			type: _.EventType.END
+			close: @shouldClose e
+
+	###*
+		@param {goog.fx.DragEvent} e
+		@return {boolean}
+		@protected
+	###
+	_::shouldClose = (e) ->
+		el = @dom_.getDocument().elementFromPoint e.clientX, e.clientY
+		!(el in [@horizontal, @vertical])
 
 	###*
 		@override

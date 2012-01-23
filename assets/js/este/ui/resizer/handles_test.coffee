@@ -22,6 +22,7 @@ suite 'este.ui.resizer.Handles', ->
 				target: handles.horizontal
 
 	setup ->
+		document.elementFromPoint = ->
 		element = document.createElement 'div'
 		element.offsetLeft = 20
 		element.offsetTop = 30
@@ -38,6 +39,11 @@ suite 'este.ui.resizer.Handles', ->
 		invisibleOverlay = new goog.ui.Component
 		handles = new Handles draggerFactory, invisibleOverlayFactory
 		handles.decorate element
+
+	# createMockDocument does not help because internally component uses glogal document
+	# but deleting for non primitive types is ok (it will return prototype implementation)
+	teardown ->
+		delete document.elementFromPoint
 
 	suite 'Handles.create', ->
 		test 'should create instance', ->
@@ -93,6 +99,8 @@ suite 'este.ui.resizer.Handles', ->
 			handles.dispose()
 			assert.isNull handles.vertical.parentNode
 			assert.isNull handles.horizontal.parentNode
+			assert.isFalse goog.events.hasListener handles.vertical, 'mouseout', false
+			assert.isFalse goog.events.hasListener handles.horizontal, 'mouseout', false
 
 	suite '#isHandle', ->
 		test 'should return true for handle element', ->
@@ -218,17 +226,44 @@ suite 'este.ui.resizer.Handles', ->
 			assert.equal handles.vertical.style.height, '214px'
 			
 
-	suite 'drag end', ->
+	suite 'drag end event', ->
 		test 'should dispose dragger', (done) ->
 			fireMouseDownOnVerticalHandle()
 			dragger.dispose = -> done()
 			goog.events.fireListeners dragger, 'start', false, {}
 			goog.events.fireListeners dragger, 'end', false, {}
 
+		test 'should unrender invisible overlay', ->
+			exitDocumentCalled = false
+			invisibleOverlay.exitDocument = -> exitDocumentCalled = true
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.fireListeners dragger, 'end', false, {}
+			assert.isTrue exitDocumentCalled
+			assert.isNull invisibleOverlay.getElement().parentNode
+
 		test 'should dispatch end event', (done) ->
 			fireMouseDownOnVerticalHandle()
 			goog.events.fireListeners dragger, 'start', false, {}
 			goog.events.listenOnce handles, 'end', -> done()
+			goog.events.fireListeners dragger, 'end', false, {}
+
+		test 'should dispatch end event with bool property close equal true', (done) ->
+			document.elementFromPoint = -> handles.vertical
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.listenOnce handles, 'end', (e) ->
+				assert.isFalse e.close
+				done()
+			goog.events.fireListeners dragger, 'end', false, {}
+
+		test 'should dispatch end event with bool property close equal false', (done) ->
+			document.elementFromPoint = -> null
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.listenOnce handles, 'end', (e) ->
+				assert.isTrue e.close
+				done()
 			goog.events.fireListeners dragger, 'end', false, {}
 
 	suite '#dispose', ->
@@ -263,22 +298,6 @@ suite 'este.ui.resizer.Handles', ->
 			handles.horizontal.__style.cursor = 'foo'
 			goog.events.fireListeners dragger, 'start', false, {}
 			assert.equal invisibleOverlay.getElement().style.cursor, 'foo'
-
-	suite 'drag end event', ->
-		test 'should unrender invisible overlay', ->
-			exitDocumentCalled = false
-			invisibleOverlay.exitDocument = -> exitDocumentCalled = true
-			fireMouseDownOnVerticalHandle()
-			goog.events.fireListeners dragger, 'start', false, {}
-			goog.events.fireListeners dragger, 'end', false, {}
-			assert.isTrue exitDocumentCalled
-			assert.isNull invisibleOverlay.getElement().parentNode
-
-
-
-
-
-
 
 
 

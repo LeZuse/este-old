@@ -30,6 +30,7 @@ suite 'este.ui.Resizer', ->
 			decorate: ->
 			isHandle: ->
 			dispose: ->
+				@disposed_ = true
 		handlesFactory = -> handles
 		resizer = new Resizer delegationFactory, handlesFactory
 	
@@ -244,6 +245,20 @@ suite 'este.ui.Resizer', ->
 				vertical: false
 			assert.equal element.style.width, 'auto'
 			assert.equal element.style.height, '80px'
+
+	suite 'handles drag end event', ->
+		test 'should dispose handles', ->
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false, element: element
+			goog.events.fireListeners handles, 'end', false, element: element
+			assert.isFalse goog.events.hasListener handles.vertical, 'mouseout', false
+			assert.isFalse goog.events.hasListener handles.horizontal, 'mouseout', false
+			assert.isTrue handles.disposed_
+			
+
+	
 			
 
 			

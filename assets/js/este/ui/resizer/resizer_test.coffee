@@ -246,6 +246,20 @@ suite 'este.ui.Resizer', ->
 			assert.equal element.style.width, 'auto'
 			assert.equal element.style.height, '80px'
 
+		test 'should set minimal size', ->
+			resizer.minimalWidth = 10
+			resizer.minimalHeight = 10
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.fireListeners handles, 'start', false,
+				element: element
+			goog.events.fireListeners handles, 'drag', false,
+				width: -45
+				height: -55
+				element: element
+			assert.equal element.style.width, '10px'
+			assert.equal element.style.height, '10px'
+
 	suite 'handles drag end event', ->
 		test 'should dispose handles', ->
 			resizer = new Resizer delegationFactory, handlesFactory

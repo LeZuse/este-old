@@ -45,6 +45,16 @@ goog.scope ->
 	_::handlesFactory
 
 	###*
+		@type {number}
+	###
+	_::minimalWidth = 5
+
+	###*
+		@type {number}
+	###
+	_::minimalHeight = 5
+
+	###*
 		@type {Element}
 	###
 	_::activeElement
@@ -150,8 +160,8 @@ goog.scope ->
 		@param {Object} e
 	###
 	_::onDrag = (e) ->
-		width = @activeElementSize.width + e.width
-		height = @activeElementSize.height + e.height
+		width = Math.max @minimalWidth, @activeElementSize.width + e.width
+		height = Math.max @minimalHeight, @activeElementSize.height + e.height
 		if e.element.tagName != 'IMG'
 			e.element.style.width = width + 'px'
 			e.element.style.height = height + 'px'

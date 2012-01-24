@@ -273,9 +273,11 @@ suite 'este.ui.Resizer', ->
 			resizer = new Resizer delegationFactory, handlesFactory
 			resizer.decorate element
 			fireDelegationMouseOver()
-			goog.events.listenOnce resizer, 'resizeend', -> done()
+			goog.events.listenOnce resizer, 'resizeend', (e) ->
+				assert.equal e.element, element
+				done()
 			goog.events.fireListeners handles, 'start', false, element: element
-			goog.events.fireListeners handles, 'end', false, close: false
+			goog.events.fireListeners handles, 'end', false, element: element, close: false
 
 
 

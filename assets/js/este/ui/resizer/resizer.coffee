@@ -176,7 +176,9 @@ goog.scope ->
 	_::onDragEnd = (e) ->
 		@dragging = false
 		@handles.dispose() if e.close
-		@dispatchEvent _.EventType.RESIZEEND
+		@dispatchEvent
+			type: _.EventType.RESIZEEND
+			element: e.element
 
 	return
 

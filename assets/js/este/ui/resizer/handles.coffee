@@ -201,6 +201,7 @@ goog.scope ->
 		@removeChild @invisibleOverlay, true
 		@dragger.dispose()
 		@dispatchEvent
+			element: @getElement()
 			type: _.EventType.END
 			close: @shouldClose e
 

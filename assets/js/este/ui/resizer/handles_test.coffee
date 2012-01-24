@@ -266,6 +266,14 @@ suite 'este.ui.resizer.Handles', ->
 				done()
 			goog.events.fireListeners dragger, 'end', false, {}
 
+		test 'should dispatch end event with element property', (done) ->
+			goog.events.listenOnce handles, 'end', (e) ->
+				assert.equal e.element, element
+				done()
+			fireMouseDownOnVerticalHandle()
+			goog.events.fireListeners dragger, 'start', false, {}
+			goog.events.fireListeners dragger, 'end', false, {}
+
 	suite '#dispose', ->
 		test 'should dispose dragger too', (done) ->
 			fireMouseDownOnVerticalHandle()

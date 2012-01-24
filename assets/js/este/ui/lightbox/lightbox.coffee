@@ -1,9 +1,9 @@
 ###*
 	@fileoverview
 	todo
-		add states
 		load progress bar
 		current idx/total count
+		check on iPad
 ###
 goog.provide 'este.ui.Lightbox'
 

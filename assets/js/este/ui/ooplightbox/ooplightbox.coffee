@@ -1,6 +1,7 @@
 ###*
 	@fileoverview OOP implementation of Lightbox. Classes, dependency
 		injection, and tests included. TDD developed.
+		For demo purposes.
 ###
 goog.provide 'este.ui.OOPLightbox'
 

@@ -7,6 +7,7 @@ goog.require 'este.ui.OOPLightbox'
 goog.require 'este.events.Delegation'
 goog.require 'este.ui.Resizer'
 goog.require 'este.ui.InvisibleOverlay'
+goog.require 'este.ui.Lightbox'
 
 app.start = ->
 

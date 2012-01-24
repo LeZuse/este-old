@@ -6,13 +6,10 @@ suite 'este.ui.Lightbox', ->
 	element = null
 	view = null
 	viewFactory = null
-
 	lightbox = null
 
-	fireHandlerClickEvent = (params) ->
-		event = {}
-		event[k] = v for k, v of params if params
-		goog.events.fireListeners handler, 'click', false, event
+	fireHandlerClickEvent = (event) ->
+		goog.events.fireListeners handler, 'click', false, event || {}
 
 	fireViewCloseEvent = ->
 		goog.events.fireListeners view, 'close', false, {}

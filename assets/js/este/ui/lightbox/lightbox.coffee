@@ -1,9 +1,9 @@
 ###*
 	@fileoverview
 	todo
-		check compilation
-		add keyboard support
 		add states
+		load progress bar
+		current idx/total count
 ###
 goog.provide 'este.ui.Lightbox'
 

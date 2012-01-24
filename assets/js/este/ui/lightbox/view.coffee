@@ -21,6 +21,7 @@ goog.inherits este.ui.lightbox.View, goog.ui.Component
 
 goog.scope ->
 	`var _ = este.ui.lightbox.View`
+	`var KeyCodes = goog.events.KeyCodes`
 
 	###*
 		Factory method.
@@ -56,17 +57,17 @@ goog.scope ->
 		imageSrc = @currentAnchor.href
 		title = @currentAnchor.title
 		@getElement().innerHTML = "
-			<div class='background'></div>
-			<div class='image'>
+			<div class='este-ui-lightbox-background'></div>
+			<div class='este-ui-lightbox-image'>
 				<img src='#{imageSrc}'>
 			</div>
-			<div class='sidebar'>
-				<div class='title'>#{title}</div>
-				<div class='current'></div>
-				<div class='buttons'>
-					<button class='previous'>previous</button>
-					<button class='next'>next</button>
-					<button class='close'>close</button>
+			<div class='este-ui-lightbox-sidebar'>
+				<div class='este-ui-lightbox-title'>#{title}</div>
+				<div class='este-ui-lightbox-current'></div>
+				<div class='este-ui-lightbox-buttons'>
+					<button class='este-ui-lightbox-previous'>previous</button>
+					<button class='este-ui-lightbox-next'>next</button>
+					<button class='este-ui-lightbox-close'>close</button>
 				</div>
 			</div>"
 
@@ -98,8 +99,13 @@ goog.scope ->
 		@protected
 	###
 	_::onDocumentKeydown = (e) ->
-		return if e.keyCode != goog.events.KeyCodes.ESC
-		@dispatchCloseEvent()
+		switch e.keyCode
+			when KeyCodes.ESC
+				@dispatchCloseEvent()
+			when KeyCodes.RIGHT, KeyCodes.DOWN
+				@moveToNextImage true
+			when KeyCodes.LEFT, KeyCodes.UP
+				@moveToNextImage false
 
 	###*
 		@param {boolean} next

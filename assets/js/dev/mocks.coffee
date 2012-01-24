@@ -30,6 +30,8 @@ class Element
 		@childNodes.splice idx, 0, newElement
 		newElement.parentNode = @
 	addEventListener: ->
+	querySelector: ->
+	querySelectorAll: ->
 
 class Document
 	constructor: ->

@@ -224,7 +224,6 @@ suite 'este.ui.resizer.Handles', ->
 			assert.equal handles.vertical.style.left, '144px'
 			assert.equal handles.vertical.style.top, '42px'
 			assert.equal handles.vertical.style.height, '214px'
-			
 
 	suite 'drag end event', ->
 		test 'should dispose dragger', (done) ->

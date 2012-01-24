@@ -259,7 +259,7 @@ suite 'este.ui.Resizer', ->
 			goog.events.fireListeners handles, 'end', false, close: true
 			assert.isTrue called
 
-		test 'should dispose handles if e.close is true', ->
+		test 'should not dispose handles if e.close is false', ->
 			called = false
 			handles.dispose = -> called = true
 			resizer = new Resizer delegationFactory, handlesFactory
@@ -268,6 +268,15 @@ suite 'este.ui.Resizer', ->
 			goog.events.fireListeners handles, 'start', false, element: element
 			goog.events.fireListeners handles, 'end', false, close: false
 			assert.isFalse called
+
+		test 'should dispatch resizeend event', (done) ->
+			resizer = new Resizer delegationFactory, handlesFactory
+			resizer.decorate element
+			fireDelegationMouseOver()
+			goog.events.listenOnce resizer, 'resizeend', -> done()
+			goog.events.fireListeners handles, 'start', false, element: element
+			goog.events.fireListeners handles, 'end', false, close: false
+
 
 
 

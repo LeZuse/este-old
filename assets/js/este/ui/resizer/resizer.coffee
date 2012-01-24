@@ -34,6 +34,12 @@ goog.scope ->
 		resizer
 
 	###*
+		@enum {string}
+	###
+	_.EventType =
+		RESIZEEND: 'resizeend'
+
+	###*
 		@type {Function}
 	###
 	_::delegationFactory
@@ -170,6 +176,7 @@ goog.scope ->
 	_::onDragEnd = (e) ->
 		@dragging = false
 		@handles.dispose() if e.close
+		@dispatchEvent _.EventType.RESIZEEND
 
 	return
 

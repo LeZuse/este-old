@@ -46,7 +46,7 @@ goog.scope ->
 	###
 	_::createDom = ->
 		goog.base @, 'createDom'
-		@getElement().className = 'lightbox'
+		@getElement().className = 'este-ui-lightbox'
 		@updateInternal()
 		return
 
@@ -56,6 +56,11 @@ goog.scope ->
 	_::updateInternal = ->
 		imageSrc = @currentAnchor.href
 		title = @currentAnchor.title
+		firstDisabled = secondDisabled = ''
+		if @currentAnchor == @anchors[0]
+			firstDisabled = ' este-ui-lightbox-disabled'
+		if @currentAnchor == @anchors[@anchors.length - 1]
+			secondDisabled = ' este-ui-lightbox-disabled'
 		@getElement().innerHTML = "
 			<div class='este-ui-lightbox-background'></div>
 			<div class='este-ui-lightbox-image'>
@@ -65,8 +70,8 @@ goog.scope ->
 				<div class='este-ui-lightbox-title'>#{title}</div>
 				<div class='este-ui-lightbox-current'></div>
 				<div class='este-ui-lightbox-buttons'>
-					<button class='este-ui-lightbox-previous'>previous</button>
-					<button class='este-ui-lightbox-next'>next</button>
+					<button class='este-ui-lightbox-previous#{firstDisabled}'>previous</button>
+					<button class='este-ui-lightbox-next#{secondDisabled}'>next</button>
 					<button class='este-ui-lightbox-close'>close</button>
 				</div>
 			</div>"
@@ -87,11 +92,11 @@ goog.scope ->
 	###
 	_::onClick = (e) ->
 		switch e.target.className
-			when 'previous'
+			when 'este-ui-lightbox-previous'
 				@moveToNextImage false
-			when 'next'
+			when 'este-ui-lightbox-next'
 				@moveToNextImage true
-			when 'close'
+			when 'este-ui-lightbox-close'
 				@dispatchCloseEvent()
 	
 	###*

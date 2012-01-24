@@ -16,7 +16,7 @@ suite 'este.ui.lightbox.View', ->
 			<div class='este-ui-lightbox-title'>a</div>
 			<div class='este-ui-lightbox-current'></div>
 			<div class='este-ui-lightbox-buttons'>
-				<button class='este-ui-lightbox-previous'>previous</button>
+				<button class='este-ui-lightbox-previous este-ui-lightbox-disabled'>previous</button>
 				<button class='este-ui-lightbox-next'>next</button>
 				<button class='este-ui-lightbox-close'>close</button>
 			</div>
@@ -32,7 +32,7 @@ suite 'este.ui.lightbox.View', ->
 			<div class='este-ui-lightbox-current'></div>
 			<div class='este-ui-lightbox-buttons'>
 				<button class='este-ui-lightbox-previous'>previous</button>
-				<button class='este-ui-lightbox-next'>next</button>
+				<button class='este-ui-lightbox-next este-ui-lightbox-disabled'>next</button>
 				<button class='este-ui-lightbox-close'>close</button>
 			</div>
 		</div>"
@@ -51,7 +51,7 @@ suite 'este.ui.lightbox.View', ->
 	fireViewElementClickEvent = (className) ->
 		goog.events.fireListeners view.getElement(), 'click', false,
 			target:
-				className: className
+				className: 'este-ui-lightbox-' + className
 
 	fireDocumentKeydownEvent = (keyCode) ->
 		goog.events.fireListeners view.dom_.getDocument(), 'keydown', false,
@@ -66,7 +66,7 @@ suite 'este.ui.lightbox.View', ->
 
 	suite '#render()', ->
 		test 'should create element with class lightbox', ->
-			assert.equal view.getElement().className, 'lightbox'
+			assert.equal view.getElement().className, 'este-ui-lightbox'
 		
 		test 'should create element with defined innerHTML', ->
 			assert.equal normalizeHTML(view.getElement().innerHTML), htmlFirstAnchor

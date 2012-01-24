@@ -23,13 +23,13 @@
 			width: 100%;
 		}
 
-		.lightbox {
+		.este-ui-lightbox {
 			position: fixed;
 			left: 0; right: 0; top: 0; bottom: 0;
 			z-index: 1;
 		}
 
-		.lightbox .background {
+		.este-ui-lightbox .este-ui-lightbox-background {
 			position: absolute;
 			left: 0; right: 0; top: 0; bottom: 0;
 			z-index: -1;
@@ -37,19 +37,19 @@
 			opacity: .8;
 		}
 
-		.lightbox .image {
+		.este-ui-lightbox .este-ui-lightbox-image {
 			position: absolute;
 			left: 10px; right: 10px;
 			top: 10px; bottom: 50px;
 			text-align: center;
 		}
 
-		.lightbox .image img {
+		.este-ui-lightbox .este-ui-lightbox-image img {
 			max-width: 100%;
 			max-height: 100%;
 		}
 
-		.lightbox .sidebar {
+		.este-ui-lightbox .este-ui-lightbox-sidebar {
 			position: absolute;
 			left: 10px;	right: 10px;
 			bottom: 0;
@@ -58,11 +58,11 @@
 			text-align: center;
 		}
 
-		.lightbox .sidebar > * {
+		.este-ui-lightbox .este-ui-lightbox-sidebar > * {
 			display: inline-block;
 		}
 
-		.lightbox .sidebar .title {
+		.este-ui-lightbox .este-ui-lightbox-sidebar .este-ui-lightbox-title {
 			position: absolute;
 			right: 10px;
 			top: 0;
@@ -70,14 +70,20 @@
 			text-transform: uppercase;
 		}
 
-		.lightbox .sidebar .current {
+		.este-ui-lightbox .este-ui-lightbox-sidebar .este-ui-lightbox-current {
 		}
 
-		.lightbox .sidebar .buttons {
+		.este-ui-lightbox .este-ui-lightbox-sidebar .este-ui-lightbox-buttons {
 		}
 
-		.lightbox .sidebar .buttons > * {
+		.este-ui-lightbox .este-ui-lightbox-sidebar .este-ui-lightbox-buttons > * {
 			display: inline-block;		
+		}
+
+		.este-ui-lightbox-disabled {
+			opacity: 0.5;
+			-moz-opacity: 0.5;
+			filter:alpha(opacity=5);
 		}
 
 

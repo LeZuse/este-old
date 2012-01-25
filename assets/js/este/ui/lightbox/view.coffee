@@ -57,23 +57,28 @@ goog.scope ->
 		imageSrc = @currentAnchor.href
 		title = @currentAnchor.title
 		firstDisabled = secondDisabled = ''
+		currentAnchorIdx = goog.array.indexOf @anchors, @currentAnchor
+		totalAnchorsCount = @anchors.length
 		if @currentAnchor == @anchors[0]
 			firstDisabled = ' este-ui-lightbox-disabled'
-		if @currentAnchor == @anchors[@anchors.length - 1]
+		if @currentAnchor == @anchors[totalAnchorsCount - 1]
 			secondDisabled = ' este-ui-lightbox-disabled'
 		@getElement().innerHTML = "
 			<div class='este-ui-lightbox-background'></div>
-			<div class='este-ui-lightbox-image'>
-				<img src='#{imageSrc}'>
+			<div class='este-ui-lightbox-content'>
+				<div class='este-ui-lightbox-image-wrapper'>
+					<img class='este-ui-lightbox-image' src='#{imageSrc}'>
+					<div class='este-ui-lightbox-title'>#{title}</div>
+				</div>
 			</div>
 			<div class='este-ui-lightbox-sidebar'>
-				<div class='este-ui-lightbox-title'>#{title}</div>
-				<div class='este-ui-lightbox-current'></div>
-				<div class='este-ui-lightbox-buttons'>
-					<button class='este-ui-lightbox-previous#{firstDisabled}'>previous</button>
-					<button class='este-ui-lightbox-next#{secondDisabled}'>next</button>
-					<button class='este-ui-lightbox-close'>close</button>
+				<button class='este-ui-lightbox-previous#{firstDisabled}'>previous</button>
+				<button class='este-ui-lightbox-next#{secondDisabled}'>next</button>
+				<div class='este-ui-lightbox-numbers'>
+					<span class='este-ui-lightbox-current'>#{currentAnchorIdx + 1}</span>/
+					<span class='este-ui-lightbox-total'>#{totalAnchorsCount}</span>
 				</div>
+				<button class='este-ui-lightbox-close'>close</button>
 			</div>"
 
 	###*

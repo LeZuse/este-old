@@ -9,33 +9,40 @@ suite 'este.ui.lightbox.View', ->
 	# classes namespaced to ensure save injection into any html
 	htmlFirstAnchor = normalizeHTML "
 		<div class='este-ui-lightbox-background'></div>
-		<div class='este-ui-lightbox-image'>
-			<img src='0'>
+		<div class='este-ui-lightbox-content'>
+			<div class='este-ui-lightbox-image-wrapper'>
+				<img class='este-ui-lightbox-image' src='0'>
+				<div class='este-ui-lightbox-title'>a</div>
+			</div>
 		</div>
 		<div class='este-ui-lightbox-sidebar'>
-			<div class='este-ui-lightbox-title'>a</div>
-			<div class='este-ui-lightbox-current'></div>
-			<div class='este-ui-lightbox-buttons'>
-				<button class='este-ui-lightbox-previous este-ui-lightbox-disabled'>previous</button>
-				<button class='este-ui-lightbox-next'>next</button>
-				<button class='este-ui-lightbox-close'>close</button>
+			<button class='este-ui-lightbox-previous este-ui-lightbox-disabled'>previous</button>
+			<button class='este-ui-lightbox-next'>next</button>
+			<div class='este-ui-lightbox-numbers'>
+				<span class='este-ui-lightbox-current'>1</span>/
+				<span class='este-ui-lightbox-total'>2</span>
 			</div>
+			<button class='este-ui-lightbox-close'>close</button>
 		</div>"
 
 	htmlSecondAnchor = normalizeHTML "
 		<div class='este-ui-lightbox-background'></div>
-		<div class='este-ui-lightbox-image'>
-			<img src='1'>
+		<div class='este-ui-lightbox-content'>
+			<div class='este-ui-lightbox-image-wrapper'>
+				<img class='este-ui-lightbox-image' src='1'>
+				<div class='este-ui-lightbox-title'>b</div>
+			</div>
 		</div>
 		<div class='este-ui-lightbox-sidebar'>
-			<div class='este-ui-lightbox-title'>b</div>
-			<div class='este-ui-lightbox-current'></div>
-			<div class='este-ui-lightbox-buttons'>
-				<button class='este-ui-lightbox-previous'>previous</button>
-				<button class='este-ui-lightbox-next este-ui-lightbox-disabled'>next</button>
-				<button class='este-ui-lightbox-close'>close</button>
+			<button class='este-ui-lightbox-previous'>previous</button>
+			<button class='este-ui-lightbox-next este-ui-lightbox-disabled'>next</button>
+			<div class='este-ui-lightbox-numbers'>
+				<span class='este-ui-lightbox-current'>2</span>/
+				<span class='este-ui-lightbox-total'>2</span>
 			</div>
+			<button class='este-ui-lightbox-close'>close</button>
 		</div>"
+
 	firstAnchor = null
 	secondAnchor = null
 	anchors = null

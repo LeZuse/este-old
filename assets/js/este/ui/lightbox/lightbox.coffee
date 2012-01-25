@@ -1,9 +1,7 @@
 ###*
-	@fileoverview
+	@fileoverview Canonical lightbox.
 	todo
-		load progress bar
-		current idx/total count
-		check on iPad
+		check on iPad, try mousedown
 ###
 goog.provide 'este.ui.Lightbox'
 

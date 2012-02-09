@@ -160,9 +160,6 @@ suite 'este.ui.lightbox.View', ->
 			goog.events.listenOnce view, 'close', -> done()
 			fireDocumentKeydownEvent()
 
-	# home end, nebo command s sipkama?
-
-
 
 
 

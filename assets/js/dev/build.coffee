@@ -13,7 +13,7 @@ build = (project, flags) ->
 		assets/js/google-closure/closure/bin/build/closurebuilder.py
 			--root=assets/js/google-closure
 			--root=assets/js/este
-			--root=assets/js/app
+			--root=assets/js/#{project}
 			--namespace=\"#{project}.start\"
 			--output_mode=compiled
 			--compiler_jar=assets/js/dev/compiler.jar

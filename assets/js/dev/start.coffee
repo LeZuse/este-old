@@ -1,3 +1,5 @@
+# todo restart on new file added
+
 {exec} = require 'child_process'
 
 commands = [

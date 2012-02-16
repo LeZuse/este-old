@@ -14,7 +14,8 @@ How to use it
 		- will compile app with debug and pretty print options
 
 TODO
-	closure debug as default build mode
+
+	consider closure debug as default build mode
 	workaround ulimit -n 10000 somehow
 
 	Přidat k tomu návod, co vše je třeba pro rozjetí. (instalace node, coffe, stylusu, chai, mocha globalne (možná to předělat na lokální node moduly).
@@ -24,19 +25,15 @@ TODO
 	Manual for TDD with Closure
 		tutorial, how to fire events etc.
 		rules what should be tested and what not
-
-	Useful plugins and key shortcuts for Sublimetext
-		zencodding..
-
 	
 TRAPS
 
-Access to protected property... from Compiler
-You probably forget to add doc comment:
-###*
-	@override
-###
-Do not forget asterisk.
+	Access to protected property... from Compiler
+	You probably forget to add doc comment:
+	###*
+		@override
+	###
+	Do not forget asterisk.
 
 
 

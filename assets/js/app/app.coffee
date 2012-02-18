@@ -9,5 +9,5 @@ goog.require 'este.ui.Lightbox'
 
 app.start = ->
 
-# Ensures the symbol will be visible after compiler renaming.
+# ensures the symbol will be visible after compiler renaming.
 goog.exportSymbol 'app.start', app.start

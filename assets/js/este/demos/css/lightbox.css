@@ -1,14 +1,13 @@
-#gallery a{display:inline-block;vertical-align:top;width:120px;margin:10px;padding:1px;border:solid 1px #ddd;font-size:0}
+#gallery a{display:inline-block;vertical-align:top;width:120px;margin:10px;padding:1px;border:solid 1px #ddd;font-size:0;}
 #gallery a img{width:100%}
-.este-ui-lightbox{position:fixed;z-index:1;left:0;right:0;top:0;bottom:0}
+.este-ui-lightbox{position:fixed;z-index:1;left:0;right:0;top:0;bottom:0;}
 .este-ui-lightbox > *{margin:0;padding:0}
 .este-ui-lightbox .este-ui-lightbox-disabled{opacity:.5}
 .este-ui-lightbox .este-ui-lightbox-background{position:absolute;left:0;right:0;top:0;bottom:0;z-index:-1;background-color:#000;opacity:.8}
-.este-ui-lightbox .este-ui-lightbox-content{position:absolute;left:10px;right:10px;top:10px;bottom:84px;text-align:center}
-.este-ui-lightbox .este-ui-lightbox-content .este-ui-lightbox-image-wrapper{display:inline-block;background-color:#fff;padding:10px;box-shadow:0 0 5px 5px #222;border-radius:4px}
+.este-ui-lightbox .este-ui-lightbox-content{position:absolute;left:10px;right:10px;top:10px;bottom:84px;text-align:center;}
+.este-ui-lightbox .este-ui-lightbox-content .este-ui-lightbox-image-wrapper{display:inline-block;background-color:#fff;padding:10px;box-shadow:0 0 5px 5px #222;border-radius:4px;}
 .este-ui-lightbox .este-ui-lightbox-content .este-ui-lightbox-image-wrapper img{max-width:100%;max-height:100%}
 .este-ui-lightbox .este-ui-lightbox-content .este-ui-lightbox-image-wrapper .este-ui-lightbox-title{text-align:left;font-size:14px;height:14px;line-height:14px;margin-bottom:-6px}
-.este-ui-lightbox .este-ui-lightbox-sidebar{position:absolute;left:10px;right:10px;bottom:0;height:50px;line-height:50px;text-align:center}
+.este-ui-lightbox .este-ui-lightbox-sidebar{position:absolute;left:10px;right:10px;bottom:0;height:50px;line-height:50px;text-align:center;}
 .este-ui-lightbox .este-ui-lightbox-sidebar > *{display:inline-block}
 .este-ui-lightbox .este-ui-lightbox-sidebar .este-ui-lightbox-numbers{color:#fff;text-transform:uppercase}
-ase}

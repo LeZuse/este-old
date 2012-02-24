@@ -53,4 +53,4 @@ if runDebug
 else
 	build project
 
-prepareIndexHtml()
+#prepareIndexHtml()

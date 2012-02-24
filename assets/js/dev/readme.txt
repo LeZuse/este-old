@@ -31,7 +31,7 @@ TODO
 		tutorial, how to fire events etc.
 		rules what should be tested and what not
 	
-TRAPS
+Traps
 
 	Access to protected property... from Compiler
 	You probably forget to add doc comment:
@@ -40,5 +40,11 @@ TRAPS
 	###
 	Do not forget asterisk.
 
+How to update libs
 
+	Submodules (closure etc.)
+	git submodule foreach git pull
 
+	Closure compiler is not submodule. Download it here.
+	http://code.google.com/p/closure-compiler/downloads/list
+	Last version is Jan 30

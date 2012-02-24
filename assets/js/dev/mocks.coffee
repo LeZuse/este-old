@@ -32,6 +32,7 @@ class Element
 	addEventListener: ->
 	querySelector: ->
 	querySelectorAll: ->
+	focus: ->
 
 class Document
 	constructor: ->

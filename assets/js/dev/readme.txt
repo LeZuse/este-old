@@ -10,10 +10,15 @@ How to use it
 	node assets/js/dev/build app
 		- will compile app
 
-	node assets/js/dev/build app --debug
+	node assets/js/dev/build app --debug || --stage
 		- will compile app with debug and pretty print options
+		- update index.html
+
+	node assets/js/dev/deploy
 
 TODO
+
+	start should run tests watcher too
 
 	consider closure debug as default build mode
 	workaround ulimit -n 10000 somehow

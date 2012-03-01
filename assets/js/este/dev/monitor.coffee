@@ -41,7 +41,7 @@ goog.scope ->
   _::decorateInternal = (element) ->
     goog.base @, 'decorateInternal', element
     @monitor = @dom_.createDom 'div',
-      'style': 'position: fixed; right: 10px; bottom: 10px; background-color: #eee; color: #000; padding: .7em;'
+      'style': 'font-size: 10px; position: fixed; right: 10px; bottom: 10px; background-color: #eee; color: #000; padding: .7em;'
     element.appendChild @monitor
     @timer = setInterval =>
       @monitor.innerHTML = goog.events.getTotalListenerCount()

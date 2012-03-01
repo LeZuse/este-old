@@ -37,6 +37,7 @@ goog.scope ->
 		@param {Function} callback
 	###
 	_::set = (callback) ->
+		# ensure object to have uid to prevent false change events
 		goog.getUid @
 		before = _.serialize @
 		callback.call @

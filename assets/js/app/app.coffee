@@ -7,6 +7,8 @@ goog.require 'este.ui.Resizer'
 goog.require 'este.ui.InvisibleOverlay'
 goog.require 'este.ui.Lightbox'
 goog.require 'este.dev.Monitor'
+goog.require 'este.mobile'
+goog.require 'este.mobile.FastButton'
 
 app.start = ->
   este.dev.Monitor.create()

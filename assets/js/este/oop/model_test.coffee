@@ -16,4 +16,4 @@ suite 'este.oop.Model', ->
 		test 'should dispatch change event if any property is changed', (done) ->
 			goog.events.listenOnce model, 'change', -> done()
 			model.set ->
-				@name = 'foo'
+				model.name = 'foo'

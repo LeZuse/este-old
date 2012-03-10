@@ -6,6 +6,7 @@
 ###
 
 goog.provide 'este.net.ChunkedJsonp'
+goog.provide 'este.net.ChunkedJsonp.create'
 
 goog.require 'goog.net.Jsonp'
 goog.require 'este.string'
@@ -40,13 +41,13 @@ goog.scope ->
 
   ###*
     @type {Function}
-    @private
+    @protected
   ###
   _::jsonpFactory
 
   ###*
     @type {Function}
-    @private
+    @protected
   ###
   _::randomStringFactory
 
@@ -80,6 +81,7 @@ goog.scope ->
   ###*
     @param {Object} payload
     @return {Array.<Object>}
+    @protected
   ###
   _::getChunks = (payload) ->
     str = este.json.stringify payload

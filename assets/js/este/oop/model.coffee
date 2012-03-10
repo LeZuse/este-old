@@ -15,16 +15,17 @@ goog.provide 'este.oop.Model'
 goog.provide 'este.oop.Model.EventType'
 
 goog.require 'goog.events.EventTarget'
-goog.require 'goog.json'
 goog.require 'goog.string'
+goog.require 'este.json'
 
 ###*
+  @param {string=} id
   @constructor
   @extends {goog.events.EventTarget}
 ###
-este.oop.Model = ->
+este.oop.Model = (id) ->
   goog.base @
-  @id = goog.string.getRandomString()
+  @id = id ? goog.string.getRandomString()
   return
 
 goog.inherits este.oop.Model, goog.events.EventTarget
@@ -46,12 +47,10 @@ goog.scope ->
 
   ###*
     @param {*} object
+    @return {string}
   ###
-  _::stringify_ = (value) ->
-    if goog.global['JSON']
-      goog.global['JSON']['stringify'] value
-    else
-      goog.json.serialize value
+  _::stringify_ = (object) ->
+    este.json.stringify object
 
   ###*
     @param {Function} callback
@@ -60,7 +59,8 @@ goog.scope ->
     # ensure object to have uid to prevent false change events
     goog.getUid @
     before = @stringify_ @
-    # no call with @, because it is not type save (compiler issue)
+    # no .call nor .apply with @, because it is not type save (compiler issue)
+    # set from inside: @set => @id = 123 # raise type exception (coffee ftw)
     callback()
     after = @stringify_ @
     return if before == after

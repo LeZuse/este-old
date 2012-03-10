@@ -17,6 +17,10 @@ suite 'este.oop.Model', ->
 			assert.isString model.id
 			assert.ok model.id.length == 11 || model.id.length == 12
 
+		test 'should prefer passed id', ->
+			model = new Model '123'
+			assert.equal model.id, '123'
+
 	suite 'set', ->
 		test 'should dispatch change event if any property is changed', (done) ->
 			goog.events.listenOnce model, 'change', -> done()

@@ -27,6 +27,7 @@ goog.scope ->
 		Factory method.
 		@param {Element} currentAnchor
 		@param {Array.<Element>} anchors
+		@return {este.ui.lightbox.View}
 	###
 	_.create = (currentAnchor, anchors) ->
 		new _ currentAnchor, anchors

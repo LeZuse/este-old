@@ -9,6 +9,12 @@ goog.require 'este.ui.Lightbox'
 goog.require 'este.dev.Monitor'
 goog.require 'este.mobile'
 goog.require 'este.mobile.FastButton'
+goog.require 'este.json'
+goog.require 'este.net.ChunkedJsonp'
+goog.require 'este.net.ChunkedPixelRequest'
+goog.require 'este.oop.Collection'
+goog.require 'este.oop.Model'
+goog.require 'este.string'
 
 app.start = ->
   este.dev.Monitor.create()

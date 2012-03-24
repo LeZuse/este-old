@@ -1,10 +1,7 @@
 ###*
   @fileoverview Fast Button
-  
-  This works weird: https://github.com/h5bp/mobile-boilerplate/wiki/JavaScript-Helper
-  My solution is better, still selecting word then outer click dispatch click (should not).
+  This sucks: https://github.com/h5bp/mobile-boilerplate/wiki/JavaScript-Helper
   todo
-    fix after selection outer click (select start does not work in iphone)
     test on android
 ###
 
@@ -25,11 +22,9 @@ este.mobile.FastButton = (@element) ->
   goog.base @
   @handler = new goog.events.EventHandler @
   if goog.userAgent.MOBILE
-    @handler.
-      listen(@element, 'touchstart', @onTouchStart, false)
+    @handler.listen(@element, 'touchstart', @onTouchStart)
   else
-    @handler.
-      listen(@element, 'click', @dispatchClickEvent, false)
+    @handler.listen(@element, 'click', @dispatchClickEvent)
   return
 
 goog.inherits este.mobile.FastButton, goog.events.EventTarget
@@ -37,7 +32,7 @@ goog.inherits este.mobile.FastButton, goog.events.EventTarget
 goog.scope ->
   `var _ = este.mobile.FastButton`
   `var events = goog.events`
-
+  
   ###*
     Enum type for the events fired by the fast button handler.
     @enum {string}
@@ -60,27 +55,27 @@ goog.scope ->
   ###
   _::moved = false
 
-  _::onTouchStart = (event) ->
+  _::onTouchStart = (e) ->
     @moved = false
     @handler.
-      listen(@element, 'touchmove', @onTouchMove, false).
-      listen(@element, 'touchend', @onTouchEnd, false)
+      listen(@element, 'touchmove', @onTouchMove).
+      listen(@element, 'touchend', @onTouchEnd)
     
-  _::onTouchMove = (event) ->
+  _::onTouchMove = (e) ->
     @moved = true
 
-  _::onTouchEnd = (event) ->
+  _::onTouchEnd = (e) ->
     return if @moved
     @moved = false
     @handler.
-      unlisten(@element, 'touchmove', @onTouchMove, false).
-      unlisten(@element, 'touchend', @onTouchEnd, false)
-    @dispatchClickEvent event
+      unlisten(@element, 'touchmove', @onTouchMove).
+      unlisten(@element, 'touchend', @onTouchEnd)
+    @dispatchClickEvent e
 
-  _::dispatchClickEvent = (event) ->
+  _::dispatchClickEvent = (e) ->
     @dispatchEvent
       type: _.EventType.CLICK
-      target: event.target
+      target: e.target
     
   ###*
     @override

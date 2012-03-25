@@ -21,7 +21,6 @@ build = (project, flags) ->
 			--compiler_jar=assets/js/dev/compiler.jar
 			--compiler_flags=\"--compilation_level=ADVANCED_OPTIMIZATIONS\"
 			--compiler_flags=\"--jscomp_warning=visibility\"
-			--compiler_flags=\"--language_in=ECMASCRIPT5_STRICT\"
 			--compiler_flags=\"--warning_level=VERBOSE\"
 			--compiler_flags=\"--output_wrapper=(function(){%output%})();\"
 			--compiler_flags=\"--js=assets/js/deps.js\"
@@ -54,4 +53,4 @@ if runDebug
 else
 	build project
 
-#prepareIndexHtml()
+prepareIndexHtml()

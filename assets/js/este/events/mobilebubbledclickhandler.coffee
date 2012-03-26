@@ -40,10 +40,27 @@ goog.scope ->
   _::filter
   
   _::dispatchClickEvent = (e) ->
-    target = goog.dom.getAncestor e.target, @filter, true
+    target = @getFilteredAncestor e.target
     return if !target
     e.target = target
     goog.base @, 'dispatchClickEvent', e
+
+  ###*
+    @param {Element} el
+    @return {Element}
+    @protected
+  ###
+  _::getFilteredAncestor = (el) ->
+    ancestor = goog.dom.getAncestor el, @filter, true
+    `/** @type {Element} */ (ancestor)`
+
+  ###*
+    @override
+  ###
+  _::setActiveState = (target) ->
+    target = @getFilteredAncestor target
+    return if !target
+    goog.base @, 'setActiveState', target
     
   return
 

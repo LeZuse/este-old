@@ -122,16 +122,12 @@ run = (startWatch) ->
 	depsFiles = resolveDeps namespaces, deps
 	writeNodeGoogBase()
 	files = getAllFiles depsFiles, testFiles
-	command = 'mocha --colors --timeout 10 --ui tdd --reporter spec ' + files.join ' '
+	command = 'mocha --colors --timeout 10 --ui tdd --reporter min ' + files.join ' '
 	exec command, (err, stdout, stderr) ->
-		# if err
-		# 	console.log stderr
-		# else
-		# 	exec 'clear', (err, stdout, stderr) ->
-		# 		console.log stdout
-		exec 'clear', (err2, stdout2, stderr2) ->
-			console.log stdout2
-			console.log stderr if err
+		if err
+			console.log stderr
+		else
+			console.log stdout
 	watchFiles files, run if startWatch
 	
 run true

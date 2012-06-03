@@ -18,17 +18,17 @@ suite 'este.string', ->
 
     test 'should not chunk string less than 2', ->
       arrange 'f'
-      assert.length chunked, 1
+      assert.lengthOf chunked, 1
       assert.equal chunked[0], 'f'
 
     test 'should not chunk string equal than 2', ->
       arrange 'fo'
-      assert.length chunked, 1
+      assert.lengthOf chunked, 1
       assert.equal chunked[0], 'fo'
 
     test 'should chunk string greater than 2', ->
       arrange 'foo'
-      assert.length chunked, 2
+      assert.lengthOf chunked, 2
       assert.equal chunked[0], 'fo'
       assert.equal chunked[1], 'o'
 
@@ -39,21 +39,21 @@ suite 'este.string', ->
 
     test 'should not chunk string less than 2', ->
       arrange 'f'
-      assert.length chunked, 1
+      assert.lengthOf chunked, 1
       assert.equal chunked[0].text, 'f'
       assert.equal chunked[0].index, 0
       assert.equal chunked[0].total, 1
 
     test 'should not chunk string equal than 2', ->
       arrange 'fo'
-      assert.length chunked, 1
+      assert.lengthOf chunked, 1
       assert.equal chunked[0].text, 'fo'
       assert.equal chunked[0].index, 0
       assert.equal chunked[0].total, 1
 
     test 'should chunk string greater than 2', ->
       arrange 'foo'
-      assert.length chunked, 2
+      assert.lengthOf chunked, 2
       assert.equal chunked[0].text, 'fo'
       assert.equal chunked[0].index, 0
       assert.equal chunked[0].total, 2

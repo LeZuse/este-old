@@ -1,0 +1,25 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>DOM Ready test</title>
+</head>
+<body>
+  <script src="../../google-closure/closure/goog/base.js"></script>
+  <script src="../../deps.js"></script>
+  <script>
+    goog.require('este.events.domReady');
+  </script>
+  <script>
+    goog.events.listen(este.events.domReady, 'ready', function() {
+      var test = document.getElementById('test');
+      alert(test.innerHTML);
+    });
+    goog.events.listen(window, 'load', function() {
+      alert('window load');
+    });
+    var img = document.createElement('img');
+    img.src = 'http://10minuteastronomy.files.wordpress.com/2010/10/ngc346_hst_big.jpg?foo=' + new Date().getTime();
+    document.body.appendChild(img);
+  </script>
+  <div id="test">ready</div>
+</body>

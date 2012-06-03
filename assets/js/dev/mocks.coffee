@@ -66,5 +66,6 @@ class Document
 global.createMockDocument = ->
 	new Document
 global.document = global.createMockDocument()
+global.location = {}
 html = global.document.createElement 'html'
 global.document.body = html.appendChild global.document.createElement 'body'

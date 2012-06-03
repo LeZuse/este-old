@@ -342,78 +342,87 @@ este.dom.getQueryParts = function(query) {
   return este.dom.getQueryPartsCache_[queryKey] = queryParts;
 };
 `
+goog.scope ->
+  `var _ = este.dom`
 
-###*
-  Element matcher for getQueryParts.
-  @param {Element} el
-  @param {string} matcher
-  @return {boolean}
-###
-este.dom.matchQueryParts = (el, matcher) ->
-  queryParts = este.dom.getQueryParts matcher
-  for part in queryParts
-    return false if part.tag && el.tagName != part.tag
-    return false if part.id && el.id != part.id
-    for className in part.classes
-      return false if !goog.dom.classes.has el, className
-  true
+  ###*
+    Element matcher for getQueryParts.
+    @param {Element} el
+    @param {string} matcher
+    @return {boolean}
+  ###
+  _.matchQueryParts = (el, matcher) ->
+    queryParts = _.getQueryParts matcher
+    for part in queryParts
+      return false if part.tag && part.tag != '*' && el.tagName != part.tag
+      return false if part.id && el.id != part.id
+      for className in part.classes
+        return false if !goog.dom.classes.has el, className
+    true
 
-###*
-  Get element ancestors.
-  @param {Node} el
-  @param {boolean=} opt_includeNode
-  @param {boolean=} opt_stopOnBody
-  @return {Array.<Element>}
-###
-este.dom.getAncestors = (el, opt_includeNode, opt_stopOnBody) ->
-  els = []
-  el = el.parentNode if !opt_includeNode
-  while el
-    break if opt_stopOnBody && el.tagName == 'BODY'
-    els.push el
-    el = el.parentNode
-  els
+  ###*
+    Get element ancestors.
+    @param {Node} el
+    @param {boolean=} opt_includeNode
+    @param {boolean=} opt_stopOnBody
+    @return {Array.<Element>}
+  ###
+  _.getAncestors = (el, opt_includeNode, opt_stopOnBody) ->
+    els = []
+    el = el.parentNode if !opt_includeNode
+    while el
+      break if opt_stopOnBody && el.tagName == 'BODY'
+      els.push el
+      el = el.parentNode
+    els
 
-###*
-  @param {Array.<Element>} elements
-###
-este.dom.getDomPath = (elements) ->
-  path = []
-  for element in elements
-    path.push element.tagName.toUpperCase()
-    path.push '#', element.id if element.id
-    for className in goog.dom.classes.get element
-      path.push '.', className
-    path.push ' '
-  path.pop()
-  path.join ''
+  ###*
+    @param {Array.<Element>} elements
+  ###
+  _.getDomPath = (elements) ->
+    path = []
+    for element in elements
+      path.push element.tagName.toUpperCase()
+      path.push '#', element.id if element.id
+      for className in goog.dom.classes.get element
+        path.push '.', className
+      path.push ' '
+    path.pop()
+    path.join ''
 
-###*
-  @param {Element} newNode
-  @param {Element} refNode
-  @param {string} where before, after, prepend, append
-###
-este.dom.insert = (newNode, refNode, where) ->
-  switch where
-    when 'before'
-      goog.dom.insertSiblingBefore newNode, refNode
-    when 'after'
-      goog.dom.insertSiblingAfter newNode, refNode
-    when 'prepend'
-      goog.dom.insertChildAt refNode, newNode, 0
-    when 'append'
-      goog.dom.appendChild refNode, newNode
+  ###*
+    @param {Element} newNode
+    @param {Element} refNode
+    @param {string} where before, after, prepend, append
+  ###
+  _.insert = (newNode, refNode, where) ->
+    switch where
+      when 'before'
+        goog.dom.insertSiblingBefore newNode, refNode
+      when 'after'
+        goog.dom.insertSiblingAfter newNode, refNode
+      when 'prepend'
+        goog.dom.insertChildAt refNode, newNode, 0
+      when 'append'
+        goog.dom.appendChild refNode, newNode
+    return
+
+  ###*
+    @param {goog.events.BrowserEvent} e
+    @param {Object.<string, Function>} object key is className, value is callback
+    @return {boolean}
+  ###
+  _.onTargetWithClass = (e, object) ->
+    node = e.target
+    while node && node.nodeType == 1
+      for className, callback of object
+        if goog.dom.classes.has node, className
+          callback node
+          return true
+      node = node.parentNode
+    false
+
   return
-
-
-
-
-
-
-
-
-
-
 
 
 

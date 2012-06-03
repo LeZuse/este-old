@@ -16,7 +16,7 @@ suite 'este.oop.Collection', ->
       assert.isUndefined collection[3]
 
     test 'should update length', ->
-      assert.length collection, 3
+      assert.lengthOf collection, 3
 
   suite 'set', ->
     test 'should dispatch change event', ->
@@ -43,7 +43,7 @@ suite 'este.oop.Collection', ->
         @array
       collection.set ->
         collection.filterLast = true
-      assert.length collection, 2
+      assert.lengthOf collection, 2
 
 
 

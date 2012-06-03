@@ -11,7 +11,7 @@ goog.require 'este.ui.lightbox.View.create'
 
 ###*
 	@param {este.ui.lightbox.AnchorClickHandler} anchorClickHandler
-	@param {Function} viewFactory
+	@param {function():este.ui.lightbox.View} viewFactory
 	@constructor
 	@extends {goog.ui.Component}
 ###

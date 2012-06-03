@@ -1,29 +1,46 @@
 ###*
   @fileoverview Model with attributes and schema.
+  
+  Why not plain objects
+    - http://www.devthought.com/2012/01/18/an-object-is-not-a-hash/
+    - reusable setters, getters, and validators (=schema)
+    - strings are fine for uncompiled properties from DOM and server
 
-  validators =
-    'required': (value) -> goog.string.trim(value).length
-  attr =
-    'firstName': 'Joe'
-    'lastName': 'Satriani'
-    'age': 55
-  schema =
+  Person = (firstName, lastName, age) ->
+    goog.base @,
+      'firstName': firstName
+      'lastName': lastName
+      'age': age
+    return
+
+  # how to inherit schema? deepmix old one with new one
+  Person::schema = 
     'firstName':
-      'set': (name) -> goog.string.trim name
+      'set': este.mvc.setters.trim
     'lastName':
-      'validators': validators
+      'validators':
+        'required': este.mvc.validators.required
+    'name':
+      'meta': (self) -> self.get('firstName') + ' ' + self.get('lastName')
     'age':
       'get': (age) -> Number age
-  model = new Model attr, schema
 
-  goog.events.listen model, 'change', (e) ->
+  joe = new Person 'Joe', 'Satriani', 55
+
+  goog.events.listen joe, 'change', (e) ->
     for key, value in e.attributes
       switch key
         when 'firstName'
           cookie.set key, value
 
-  model.set 'lastName', 'Satch'
+  joe.set 'lastName', 'Satch'
+  joe.get 'lastName'
   
+  # returns whole object
+  joe.get()
+  # modify complex object
+  joe.get('items').add 'foo'
+
   todo
     validation and its messages with locals aka "#{prop} can not be blank"
     model.bind 'firstName', (firstName) -> ..
@@ -37,27 +54,31 @@ goog.require 'goog.string'
 goog.require 'este.json'
 goog.require 'goog.object'
 
+goog.require 'este.mvc.setters'
+goog.require 'este.mvc.validators'
+
 ###*
-  @param {Object} attr
-  @param {Object=} schema
+  @param {Object=} opt_attrs
   @constructor
   @extends {goog.events.EventTarget}
 ###
-este.mvc.Model = (attr, @schema = {}) ->
-  @attr = {}
-  @set attr if attr
+este.mvc.Model = (opt_attrs) ->
+  @attrs = {}
+  @set opt_attrs if opt_attrs
   goog.base @
-  @id = @get('id') || goog.string.getRandomString()
+  @set 'id', goog.string.getRandomString() if !@get('id')?
   return
 
 goog.inherits este.mvc.Model, goog.events.EventTarget
   
 goog.scope ->
   `var _ = este.mvc.Model`
-
-  _.Validators =
-    required: (value) ->
-      goog.string.trim(value).length
+  
+  ###*
+    @enum {string}
+  ###
+  _.EventType =
+    CHANGE: 'change'
 
   ###*
     Prefix because http://www.devthought.com/2012/01/18/an-object-is-not-a-hash
@@ -77,24 +98,18 @@ goog.scope ->
     object = {}
     object[key] = opt_value
     object
-  
-  ###*
-    @enum {string}
-  ###
-  _.EventType =
-    CHANGE: 'change'
 
   ###*
     @type {Object}
     @protected
   ###
-  _::attr
+  _::attrs
 
   ###*
     @type {Object}
     @protected
   ###
-  _::schema
+  _::schema = {}
 
   ###*
     @type {*}
@@ -112,7 +127,7 @@ goog.scope ->
     @return {*}
   ###
   _::get = (key) ->
-    value = @attr[_.getKey(key)]
+    value = @attrs[_.getKey(key)]
     meta = @schema[key]?['meta']
     return meta @ if meta
     get = @schema[key]?.get
@@ -132,11 +147,13 @@ goog.scope ->
     return false if goog.object.isEmpty changes
     @errors = @getErrors changes
     return false if !goog.object.isEmpty @errors
-    @attr[_.getKey(key)] = value for key, value of changes
-    @onChange changes
+    for key, value of changes
+      @attrs[_.getKey(key)] = value
+      continue if !(value instanceof goog.events.EventTarget)
+      value.setParentEventTarget @
     @dispatchEvent
       type: _.EventType.CHANGE
-      attr: changes
+      attrs: changes
     true
 
   ###*
@@ -166,21 +183,37 @@ goog.scope ->
     errors
 
   ###*
-    @param {Object} attr
-  ###
-  _::onChange = (attr) ->
-  
-  ###*
     @param {string} key
     @return {boolean}
   ###
   _::has = (key) ->
-    _.getKey(key) of @attr
+    _.getKey(key) of @attrs
 
   ###*
+    todo: add boolean return
     @param {string} key
   ###
   _::remove = (key) ->
-    delete @attr[_.getKey(key)]
+    _key = _.getKey key
+    value = @attrs[_key]
+    value.setParentEventTarget null if value instanceof goog.events.EventTarget
+    delete @attrs[_key]
+    attrs = {}
+    attrs[key] = value
+    @dispatchEvent
+      type: _.EventType.CHANGE
+      attrs: attrs
+
+  ###*
+    Returns shallow copy.
+    @return {Object}
+  ###
+  _::toJson = ->
+    object = {}
+    for key, value of @attrs
+      origKey = key.substring 1
+      newValue = @get origKey
+      object[origKey] = newValue
+    object
 
   return

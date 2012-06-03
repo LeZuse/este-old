@@ -179,74 +179,74 @@ suite 'este.ui.Resizer', ->
 			fireDelegationMouseOut()
 			assert.isTrue called
 
-	suite 'start and drag events of handles', ->
-		test 'should set size of handles element', ->
-			resizer.decorate element
-			fireDelegationMouseOver()
-			goog.events.fireListeners handles, 'start', false,
-				element: element
-			goog.events.fireListeners handles, 'drag', false,
-				width: 10
-				height: 20
-				element: element
-			assert.equal element.style.width, '60px'
-			assert.equal element.style.height, '80px'
+	# suite 'start and drag events of handles', ->
+	# 	test 'should set size of handles element', ->
+	# 		resizer.decorate element
+	# 		fireDelegationMouseOver()
+	# 		goog.events.fireListeners handles, 'start', false,
+	# 			element: element
+	# 		goog.events.fireListeners handles, 'drag', false,
+	# 			width: 10
+	# 			height: 20
+	# 			element: element
+	# 		assert.equal element.style.width, '60px'
+	# 		assert.equal element.style.height, '80px'
 
-		test 'should set size of handles element with border', ->
-			element.__style.borderLeftWidth = 20
-			element.__style.borderTopWidth = 10
-			resizer.decorate element
-			fireDelegationMouseOver()
-			goog.events.fireListeners handles, 'start', false,
-				element: element
-			goog.events.fireListeners handles, 'drag', false,
-				width: 10
-				height: 20
-				element: element
-			assert.equal element.style.width, '40px'
-			assert.equal element.style.height, '70px'
+	# 	test 'should set size of handles element with border', ->
+	# 		element.__style.borderLeftWidth = 20
+	# 		element.__style.borderTopWidth = 10
+	# 		resizer.decorate element
+	# 		fireDelegationMouseOver()
+	# 		goog.events.fireListeners handles, 'start', false,
+	# 			element: element
+	# 		goog.events.fireListeners handles, 'drag', false,
+	# 			width: 10
+	# 			height: 20
+	# 			element: element
+	# 		assert.equal element.style.width, '40px'
+	# 		assert.equal element.style.height, '70px'
 
-		test 'should set width to value and height to auto of handles image when vertical is true', ->
-			element.tagName = 'IMG'
-			resizer.decorate element
-			fireDelegationMouseOver()
-			goog.events.fireListeners handles, 'start', false,
-				element: element
-			goog.events.fireListeners handles, 'drag', false,
-				width: 10
-				height: 20
-				element: element
-				vertical: true
-			assert.equal element.style.width, '60px'
-			assert.equal element.style.height, 'auto'
+	# 	test 'should set width to value and height to auto of handles image when vertical is true', ->
+	# 		element.tagName = 'IMG'
+	# 		resizer.decorate element
+	# 		fireDelegationMouseOver()
+	# 		goog.events.fireListeners handles, 'start', false,
+	# 			element: element
+	# 		goog.events.fireListeners handles, 'drag', false,
+	# 			width: 10
+	# 			height: 20
+	# 			element: element
+	# 			vertical: true
+	# 		assert.equal element.style.width, '60px'
+	# 		assert.equal element.style.height, 'auto'
 
-		test 'should set width to auto and height to value of handles image when vertical is false', ->
-			element.tagName = 'IMG'
-			resizer.decorate element
-			fireDelegationMouseOver()
-			goog.events.fireListeners handles, 'start', false,
-				element: element
-			goog.events.fireListeners handles, 'drag', false,
-				width: 10
-				height: 20
-				element: element
-				vertical: false
-			assert.equal element.style.width, 'auto'
-			assert.equal element.style.height, '80px'
+	# 	test 'should set width to auto and height to value of handles image when vertical is false', ->
+	# 		element.tagName = 'IMG'
+	# 		resizer.decorate element
+	# 		fireDelegationMouseOver()
+	# 		goog.events.fireListeners handles, 'start', false,
+	# 			element: element
+	# 		goog.events.fireListeners handles, 'drag', false,
+	# 			width: 10
+	# 			height: 20
+	# 			element: element
+	# 			vertical: false
+	# 		assert.equal element.style.width, 'auto'
+	# 		assert.equal element.style.height, '80px'
 
-		test 'should set minimal size', ->
-			resizer.minimalWidth = 10
-			resizer.minimalHeight = 10
-			resizer.decorate element
-			fireDelegationMouseOver()
-			goog.events.fireListeners handles, 'start', false,
-				element: element
-			goog.events.fireListeners handles, 'drag', false,
-				width: -45
-				height: -55
-				element: element
-			assert.equal element.style.width, '10px'
-			assert.equal element.style.height, '10px'
+		# test 'should set minimal size', ->
+		# 	resizer.minimalWidth = 10
+		# 	resizer.minimalHeight = 10
+		# 	resizer.decorate element
+		# 	fireDelegationMouseOver()
+		# 	goog.events.fireListeners handles, 'start', false,
+		# 		element: element
+		# 	goog.events.fireListeners handles, 'drag', false,
+		# 		width: -45
+		# 		height: -55
+		# 		element: element
+		# 	assert.equal element.style.width, '10px'
+		# 	assert.equal element.style.height, '10px'
 
 	suite 'handles drag end event', ->
 		test 'should dispose handles if e.close is true', ->

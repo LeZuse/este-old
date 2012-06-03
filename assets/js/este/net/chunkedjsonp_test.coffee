@@ -33,12 +33,12 @@ suite 'este.net.ChunkedJsonp', ->
           switch count
             when 0
               assert.equal payload.u, 0
-              assert.length payload.d, 1900
+              assert.lengthOf payload.d, 1900
               assert.equal payload.i, 0
               replyCallback()
             when 1
               assert.equal payload.u, 0
-              assert.length payload.d, 1609
+              assert.lengthOf payload.d, 1609
               assert.equal payload.i, 1
               assert.equal payload.t, 2
               replyCallback 'reply'

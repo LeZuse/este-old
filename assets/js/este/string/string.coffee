@@ -98,7 +98,11 @@ este.string.REMOVE_DIACRITICS_MAP = [
   @param {string} str
 ###
 este.string.toFancyUrl = (str) ->
-  este.string.removeDiacritics(str).toLowerCase().replace /[^a-z0-9\-]/g, ''
+  este.string.
+    removeDiacritics(str).
+    toLowerCase().
+    replace(/[^a-z0-9\-]/g, '').
+    replace(/\-+/g, '-')
 
 ###*
   @type {Object.<string, string>}

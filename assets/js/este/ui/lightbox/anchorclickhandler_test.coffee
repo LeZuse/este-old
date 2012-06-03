@@ -17,15 +17,15 @@ suite 'este.ui.lightbox.AnchorClickHandler', ->
 	suite '#decorate', ->
 		test 'should register click event', ->
 			listeners = goog.events.getListeners element, 'click', false
-			assert.length listeners, 1
+			assert.lengthOf listeners, 1
 
 		test 'should register click event via enterDocument', ->
 			handler.exitDocument()
 			listeners = goog.events.getListeners element, 'click', false
-			assert.length listeners, 0
+			assert.lengthOf listeners, 0
 			handler.enterDocument()
 			listeners = goog.events.getListeners element, 'click', false
-			assert.length listeners, 1
+			assert.lengthOf listeners, 1
 
 	suite 'click should prevent default action', ->
 		test 'on anchor with lightbox rel attribute', (done) ->

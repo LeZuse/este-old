@@ -1,38 +1,43 @@
 suite 'este.mvc.Model', ->
 
-  Model = este.mvc.Model
-  attr = null
-  schema = null
+  Person = (attrs) ->
+    goog.base @, attrs
+    return
+
+  goog.inherits Person, este.mvc.Model
+
+  Person::schema = 
+    'firstName':
+      'set': (name) -> goog.string.trim name
+    'lastName':
+      'validators':
+        'required': (value) -> goog.string.trim(value).length
+    'name':
+      'meta': (self) -> self.get('firstName') + ' ' + self.get('lastName')
+    'age':
+      'get': (age) -> Number age
+
+  attrs = null
   model = null
 
   setup ->
-    attr =
+    attrs =
       'firstName': 'Joe'
       'lastName': 'Satriani'
       'age': 55
-    schema =
-      'firstName':
-        'set': (name) -> goog.string.trim name
-      'lastName':
-        'validators':
-          'required': (value) -> goog.string.trim(value).length
-      'name':
-        'meta': (self) -> self.get('firstName') + ' ' + self.get('lastName')
-      'age':
-        'get': (age) -> Number age
-    model = new Model attr, schema
+    model = new Person attrs
 
   suite 'constructor', ->
     test 'should assign id', ->
-      model = new Model
-      assert.isString model.id
+      model = new Person
+      assert.isString model.get 'id'
 
     test 'should not override id', ->
-      model = new Model id: 'foo'
-      assert.equal model.id, 'foo'
+      model = new Person id: 'foo'
+      assert.equal model.get('id'), 'foo'
 
     test 'should create attributes', ->
-      model = new Model
+      model = new Person
       assert.isUndefined model.get 'firstName'
 
     test 'should return passed attributes', ->
@@ -40,7 +45,7 @@ suite 'este.mvc.Model', ->
       assert.strictEqual model.get('lastName'), 'Satriani'
       assert.strictEqual model.get('age'), 55
 
-  suite 'set', ->
+  suite 'set and get', ->
     test 'should set attribute', ->
       model.set 'age', 35
       assert.strictEqual model.get('age'), 35
@@ -50,11 +55,21 @@ suite 'este.mvc.Model', ->
       assert.strictEqual model.get('age'), 35
       assert.strictEqual model.get('firstName'), 'Pepa'
 
+  suite 'toJson', ->
+    test 'should return attributes json', ->
+      json = model.toJson()
+      attrs =
+        'firstName': 'Joe'
+        'lastName': 'Satriani'
+        'age': 55
+        'id': json.id
+      assert.deepEqual json, attrs
+
   suite 'has', ->
     test 'should work', ->
       assert.isTrue model.has 'age'
       assert.isFalse model.has 'fooBlaBlaFoo'
-
+    
     test 'should work even for keys which are defined on Object.prototype.', ->
       assert.isFalse model.has 'toString'
       assert.isFalse model.has 'constructor'
@@ -76,13 +91,13 @@ suite 'este.mvc.Model', ->
 
     suite 'get', ->
       test 'should work as formater after get', ->
-        model.set 'age', '123'
+        model.set 'age', '1d23'
         assert.isNumber model.get 'age'
 
   suite 'change event', ->
     test 'should be dispached if value change', (done) ->
       goog.events.listenOnce model, 'change', (e) ->
-        assert.deepEqual e.attr,
+        assert.deepEqual e.attrs,
           age: 'foo'
         done()
       model.set 'age', 'foo'
@@ -94,20 +109,12 @@ suite 'este.mvc.Model', ->
       model.set 'age', 55
       assert.isFalse called
 
-  suite 'onChange', ->
-    test 'should call overridable method onChange', (done) ->
-      model.onChange = (attr) ->
-        assert.deepEqual attr,
-          age: 'foo'
-        done()
-      model.set 'age', 'foo'
-
-    test 'should not call overridable method onChange if value hasnt changed', ->
+    test 'should be dispached if value is removed', ->
       called = false
-      model.onChange = (attr) ->
+      goog.events.listenOnce model, 'change', (e) ->
         called = true
-      model.set 'age', 55
-      assert.isFalse called
+      model.remove 'age'
+      assert.isTrue called
 
   suite 'meta', ->
     test 'should defined meta attribute', ->
@@ -121,6 +128,17 @@ suite 'este.mvc.Model', ->
           'required': true
       assert.equal model.get('lastName'), 'Satriani'
 
+  suite 'bubbling events', ->
+    test 'from inner model should work', ->
+      called = 0
+      innerModel = new Person
+      model.set 'inner', innerModel
+      goog.events.listen model, 'change', (e) ->
+        called++
+      innerModel.set 'name', 'foo'
+      model.remove 'inner', innerModel
+      innerModel.set 'name', 'foo'
+      assert.equal called, 2
       
 
 

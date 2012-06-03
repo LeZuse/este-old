@@ -27,7 +27,8 @@ goog.scope ->
   ###
   _.create = (uri) ->
     srcCallback = (src) ->
-      img = document.createElement 'img'
+      # new Image 1, 1 because that's how GA does it.
+      img = new Image 1, 1
       img.src = src
       return
     new _ uri, goog.string.getRandomString, srcCallback

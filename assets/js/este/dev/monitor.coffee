@@ -31,6 +31,16 @@ goog.scope ->
   _::monitor
 
   ###*
+    @type {Node}
+  ###
+  _::left
+
+  ###*
+    @type {Node}
+  ###
+  _::right
+
+  ###*
     @type {?number}
   ###
   _::timer
@@ -40,11 +50,13 @@ goog.scope ->
   ###
   _::decorateInternal = (element) ->
     goog.base @, 'decorateInternal', element
-    @monitor = @dom_.createDom 'div',
+    @monitor = @dom_.createDom 'div'
       'style': 'font-size: 10px; position: fixed; right: 10px; bottom: 10px; background-color: #eee; color: #000; padding: .7em;'
+    @left = @monitor.appendChild @dom_.createDom 'span', id: 'devlog'
+    @right = @monitor.appendChild @dom_.createDom 'span'
     element.appendChild @monitor
     @timer = setInterval =>
-      @monitor.innerHTML = goog.events.getTotalListenerCount()
+      @right.innerHTML = '| ' + goog.events.getTotalListenerCount()
     , 100
     return
 

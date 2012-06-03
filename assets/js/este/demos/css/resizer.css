@@ -1,7 +1,0 @@
-#div,img,iframe{width:300px;display:block;border:solid 16px #ddd;margin:6px}
-#div{border:0;padding:14px;background-color:#bbb;}
-#div em{border:solid 1px #f00}
-#div,iframe{height:100px}
-.este-resizer-handle-horizontal,.este-resizer-handle-vertical{position:absolute;background-color:#f00;border:0;opacity:.5}
-.este-resizer-handle-horizontal{height:8px;margin-top:-8px;cursor:n-resize}
-.este-resizer-handle-vertical{width:8px;margin-left:-8px;cursor:w-resize}

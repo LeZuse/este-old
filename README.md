@@ -5,7 +5,7 @@ This is a dev stack for Javascript front-end developers that aims to make life e
 - [Google Closure Tools](https://developers.google.com/closure/)
 - [Coffeescript](http://coffeescript.org/)
 - [Stylus](http://learnboost.github.com/stylus/)
-- [Mocha](http://visionmedia.github.com/mocha/)
+- [Mocha](https://mochajs.org/)
 - FileSystem watcher
 
 # Future?
